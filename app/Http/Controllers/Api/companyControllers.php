@@ -184,7 +184,7 @@ public function validateCode(Request $request){
     #Start logic
     $company=Company::where('email',$request->email)->first();
     #check if code is right
-    if($request->code == $company->code){
+    if($request->code !== $company->code){
         return response()->json(['status'=>408]);
     }
     $company->code=NULL;
