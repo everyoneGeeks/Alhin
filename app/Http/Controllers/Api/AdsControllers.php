@@ -19,7 +19,9 @@ class AdsControllers extends Controller
             try{
         #Start logic    
         $Ads=Ads::first();
-
+              if($Ads == NULL){
+                return response()->json(['status'=>204]);
+              }
         return response()->json(['status'=>200,'ads'=>new adsResource($Ads)]);
         #end logic
                 }catch(Exception $e) {

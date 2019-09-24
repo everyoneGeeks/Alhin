@@ -39,3 +39,51 @@ Route::post('/changePassword/employee',"Api\EmployeeControllers@changePassword")
 #-----------------------------------------
 Route::post('/ads',"Api\AdsControllers@getAds");
 
+#------------------------------------------
+#residenceCountry,religion,nationality
+#-----------------------------------------
+Route::post('/residenceCountry',"Api\SelectObjects@residenceCountry");
+Route::post('/religion',"Api\SelectObjects@religion");
+Route::post('/nationality',"Api\SelectObjects@nationality");
+
+
+#------------------------------------------
+#favourite,company,employee
+#-----------------------------------------
+Route::post('/favourite/company',"Api\Favourite@favourite_company");
+Route::post('/MakeFavourite/company',"Api\Favourite@MakeFavourite_company");
+Route::post('/favourite/employee',"Api\Favourite@favourite_employee");
+Route::post('/MakeFavourite/employee',"Api\Favourite@MakeFavourite_employee");
+
+
+#------------------------------------------
+#CV part
+#-----------------------------------------
+Route::post('/cv/add',"Api\CVControllers@add");
+Route::post('/cv/update',"Api\CVControllers@update");
+Route::post('/cv/get',"Api\CVControllers@get");
+Route::post('/cv/search',"Api\CVControllers@search");
+
+
+#------------------------------------------
+#Jobs part
+#-----------------------------------------
+Route::post('/job/add',"Api\JobControllers@add");
+Route::post('/job/update',"Api\JobControllers@update");
+Route::post('/job/get',"Api\JobControllers@get");
+Route::post('/job/search',"Api\JobControllers@search");
+
+
+#------------------------------------------
+#appley  for employee part
+#-----------------------------------------
+Route::post('/appley',"Api\AppleyControllers@appley");
+Route::post('/appley/get',"Api\AppleyControllers@getAppley");
+Route::post('/appley/get/employee',"Api\AppleyControllers@getAppleyEmployee");
+
+#------------------------------------------
+#sendFirebaseToken,contact,appInfo part
+#-----------------------------------------
+Route::post('/sendFirebaseToken',"Api\sendFirebaseTokenControllers@sendFirebaseToken");
+Route::post('/contact',"Api\contactControllers@contact");
+Route::post('/appInfo',"Api\appInfoControllers@appInfo");
