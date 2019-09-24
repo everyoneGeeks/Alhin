@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\residenceCountry as ResourcesCountry;
 use App\Http\Resources\religion as ResourcesReligion;
 use App\Http\Resources\nationality as ResourcesNationality;
-
+use App\Setting;
 use App\religion;
 use App\nationality;
 use App\residenceCountry;
@@ -72,6 +72,28 @@ public function nationality(Request $request){
             return response()->json(['status'=>204]);
         }
         return response()->json(['status'=>200,'nationality'=>ResourcesNationality::collection($nationality)]);
+        #end logic
+                }catch(Exception $e) {
+                   return response()->json(['status' =>404]);
+                 }
+    }// end funcrion    
+    
+    
+/**  
+* This api will be used to get the app info
+* -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+* @param $request Illuminate\Http\Request;
+* @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+*/
+public function appInfo(Request $request){
+    try{
+        #Start logic
+        $appInfo=Setting::first();
+        #check if empty
+        if($appInfo == NULL){
+            return response()->json(['status'=>204]);
+        }
+        return response()->json(['status'=>200,'appInfo'=>$appInfo]);
         #end logic
                 }catch(Exception $e) {
                    return response()->json(['status' =>404]);

@@ -84,6 +84,6 @@ Route::post('/appley/get/employee',"Api\AppleyControllers@getAppleyEmployee");
 #------------------------------------------
 #sendFirebaseToken,contact,appInfo part
 #-----------------------------------------
-Route::post('/sendFirebaseToken',"Api\sendFirebaseTokenControllers@sendFirebaseToken");
-Route::post('/contact',"Api\contactControllers@contact");
-Route::post('/appInfo',"Api\appInfoControllers@appInfo");
+//Route::post('/sendFirebaseToken',"Api\sendFirebaseTokenControllers@sendFirebaseToken");
+//Route::post('/contact',"Api\contactControllers@contact");
+Route::post('/appInfo',"Api\SelectObjects@appInfo");
