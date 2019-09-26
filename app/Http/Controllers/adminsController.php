@@ -118,6 +118,7 @@ public function list(){
     public function submitAdd(Request $request){
 
     $rules=['name'=>'required','email'=>'required','password'=>'required|min:8'];
+
     $message=['name.required'=>'يجب ادخال الاسم  ',
     'email.required'=>'يجب ادخال الايميل ','password.required'=>'يجب ادخال الرقم السري ',
     'password.min'=>'يجب ادخال ان يكون الرقم السري اكبر من 8'];
@@ -132,7 +133,16 @@ if($request->admin == 1){
     $admin->save();
 
 }else{
-    $permissions=['users'=>['add'=>$request->addusers,'edit'=>$request->editusers,'delete'=>$request->deleteusers]];
+    $permissions=[
+    'employee'=>['add'=>$request->addemployee,'edit'=>$request->editemployee,'delete'=>$request->deleteemployee],
+    'company'=>['add'=>$request->addcompany,'edit'=>$request->editcompany,'delete'=>$request->deletecompany],
+    'country'=>['add'=>$request->addcountry,'edit'=>$request->editcountry,'delete'=>$request->deletecountry],
+    'religion'=>['add'=>$request->addreligion,'edit'=>$request->editreligion,'delete'=>$request->deletereligion],
+    'ads'=>['add'=>$request->addads,'edit'=>$request->editads,'delete'=>$request->deleteads],
+    'app_setting'=>['add'=>$request->addapp_setting,'edit'=>$request->editapp_setting,'delete'=>$request->deleteapp_setting],
+    'contact'=>['add'=>$request->addcontact,'edit'=>$request->editcontact,'delete'=>$request->deletecontact],
+    'nationality'=>['add'=>$request->addnationality,'edit'=>$request->editnationality,'delete'=>$request->deletenationality],
+];
     $admin=new User;
     $admin->name=$request->name;
     $admin->email=$request->email;

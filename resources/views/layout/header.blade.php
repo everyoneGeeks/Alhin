@@ -14,7 +14,7 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
   <!-- Google Font: Source Raleway -->
-  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
 <!-- additional css style  -->
   <!-- bootstrap rtl -->
   <link rel="stylesheet" href="{{asset('dist/css/bootstrap-rtl.min.css')}}">
@@ -23,7 +23,7 @@
     @yield('style')  
     <style>
     body{
-      font-family: 'Raleway', sans-serif;
+font-family: 'Cairo', sans-serif;
     }
     </style>
 </head>
@@ -43,9 +43,18 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav mr-auto">
 
-      <li class="nav-item">
-        <a class="nav-link"  href="#">
-          <i class="fa fa-th-large"></i></a>
+    <li class="nav-item dropdown ">
+        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+          <i class="fa fa-bell-o"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left ">
+    
+          <div class="dropdown-divider"></div>
+          <a href="{{route('logout')}}" class="dropdown-item">
+            <i class="fa fa-envelope ml-2"></i>   
+            <span class="float-left text-muted text-sm">تسجيل الحروج</span>
+          </a>
+         
       </li>
     </ul>
   </nav>
