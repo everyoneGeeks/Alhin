@@ -16,9 +16,7 @@ class Jobs extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'job_title_ar'=>$this->job_title_ar,
-            'job_title_en'=>$this->job_title_en,
-
+            'job_title'=>$request->language =='ar' ? $this->job_title_ar :$this->job_title_en,
             'image'=>$this->image,
             'phone'=>$this->phone,
             'email'=>$this->email,

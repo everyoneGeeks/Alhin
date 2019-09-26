@@ -19,7 +19,8 @@ class CompnayJobs extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'email'=>$this->email,
-            'logo'=>$this->logo,
+            'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
+            'language'=>$this->language,
         ];
     }
 }

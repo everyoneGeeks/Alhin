@@ -94,7 +94,7 @@ public function getAppley(Request $request){
             }
     #Start logic
     $employee = Employee::where('apiToken', $request->apiToken)->first();
-
+    $request->language=$employee->language;
     #check if employee is Register 
     $jobs=Appley::where('employee_id',$employee->id)->get();
 

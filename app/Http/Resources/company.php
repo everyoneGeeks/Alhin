@@ -18,7 +18,8 @@ class company extends JsonResource
             'apiToken'=>$this->apiToken,
             'name'=>$this->name,
             'email'=>$this->email,
-            'logo'=>$this->logo,
+            'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
+            'language'=>$this->language,
             'jobs'=>Job::collection($this->whenLoaded('jobs'))
         ];
     }

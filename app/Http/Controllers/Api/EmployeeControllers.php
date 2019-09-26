@@ -35,7 +35,7 @@ class EmployeeControllers extends Controller
 */
 public function register(Request $request){
     $rules=[
-        'logo'=>'required|image',
+       // 'logo'=>'required|image',
         'name'=>'required',
         'email'=>'required|email|unique:employee,email',
         'password'=>'required|min:6',
@@ -43,8 +43,8 @@ public function register(Request $request){
     ];
     
     $messages=[
-        'logo.required'=>'400',
-        'logo.image'=>'400',
+       // 'logo.required'=>'400',
+       // 'logo.image'=>'400',
         'name.required'=>'400',
         'email.required'=>'400',
         'email.email'=>'400',
@@ -66,8 +66,9 @@ public function register(Request $request){
     $employee->email=$request->email;
     $employee->password=Hash::make($request->password);
     $employee->language=$request->language;
-    $this->SaveFile($employee,'logo','logo','images');
+   // $this->SaveFile($employee,'logo','logo','images');
     $employee->save();
+    
     return response()->json(['status'=>200,'employee'=>new employeeResource($employee)]);
     #end logic
             }catch(Exception $e) {
@@ -75,7 +76,50 @@ public function register(Request $request){
              }
         }// end funcrion
     
+/**  
+* This api will be used to update  company
+* -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+* @param $request Illuminate\Http\Request;
+* @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+*/
+public function update(Request $request){
+    $rules=[
+        'apiToken'=>'required|exists:employee,apiToken',
+        'logo'=>'image',
+        'password'=>'min:6',
+        'language'=>'in:ar,en'
+    ];
     
+    $messages=[
+      'logo.image'=>'400',
+        'email.email'=>'400',
+        'email.unique'=>'409',
+        'language.in'=>'400'
+    ];
+        try{
+            $Employee=Employee::where('apiToken',$request->apiToken)->first();
+            $rules['email']='email|unique:employee,email,'.$Employee->id;
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if($validator->fails()) {
+                return response()->json(['status'=>(int)$validator->errors()->first()]);
+            }
+    #Start logic
+
+
+    $request->name == NULL ? :$Employee->name=$request->name;
+    $request->email == NULL ? :$Employee->email=$request->email;
+    $request->password == NULL ? :$Employee->password=Hash::make($request->password);
+    $request->language == NULL ? :$Employee->language=$request->language;
+    $request->logo == NULL ? :$this->SaveFile($Employee,'logo','logo','images');
+    $Employee->save();
+
+    return response()->json(['status'=>200,'employee'=>new employeeResource($employee)]);
+    #end logic
+            }catch(Exception $e) {
+               return response()->json(['status' =>404]);
+             }
+        }// end funcrion    
+
     
     /**  
     * This api will be used to login  employee with (password & email)
@@ -142,7 +186,7 @@ public function register(Request $request){
                 }
         #Start logic
         $employee=Employee::where('email',$request->email)->first();
-        $code="12345678";
+        $code="123456";
         $employee->code=$code;
         $employee->save();
     

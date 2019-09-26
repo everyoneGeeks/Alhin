@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 #Company
 #-----------------------------------------
 Route::post('/register/company',"Api\companyControllers@register");
+Route::post('/update/company',"Api\companyControllers@update");
 Route::post('/login/company',"Api\companyControllers@login");
 Route::post('/forgetPassword/company',"Api\companyControllers@forgetPassword");
 Route::post('/validateCode/company',"Api\companyControllers@validateCode");
@@ -29,6 +30,7 @@ Route::post('/changePassword/company',"Api\companyControllers@changePassword");
 #employee
 #-----------------------------------------
 Route::post('/register/employee',"Api\EmployeeControllers@register");
+Route::post('/update/employee',"Api\EmployeeControllers@update");
 Route::post('/login/employee',"Api\EmployeeControllers@login");
 Route::post('/forgetPassword/employee',"Api\EmployeeControllers@forgetPassword");
 Route::post('/validateCode/employee',"Api\EmployeeControllers@validateCode");
@@ -82,8 +84,9 @@ Route::post('/appley/get',"Api\AppleyControllers@getAppley");
 Route::post('/appley/get/employee',"Api\AppleyControllers@getAppleyEmployee");
 
 #------------------------------------------
-#sendFirebaseToken,contact,appInfo part
+#sendFirebaseToken,contact,appInfo,changeLang part
 #-----------------------------------------
-//Route::post('/sendFirebaseToken',"Api\sendFirebaseTokenControllers@sendFirebaseToken");
-//Route::post('/contact',"Api\contactControllers@contact");
+Route::post('/sendFirebaseToken',"Api\SelectObjects@sendFirebaseToken");
+Route::post('/contact',"Api\SelectObjects@contact");
 Route::post('/appInfo',"Api\SelectObjects@appInfo");
+Route::post('/changeLang',"Api\SelectObjects@changeLang");

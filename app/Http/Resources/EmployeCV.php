@@ -19,7 +19,8 @@ class EmployeCV extends JsonResource
             'apiToken'=>$this->apiToken,
             'name'=>$this->name,
             'email'=>$this->email,
-            'logo'=>$this->logo,
+            'logo'=>isset($this->logo),
+            'language'=>$this->language,
             'apiToken'=>$this->apiToken,
             
         ];

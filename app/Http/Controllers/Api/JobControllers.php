@@ -169,7 +169,7 @@ class JobControllers extends Controller
             #Start logic
             #check employee
             $company = company::where('apiToken', $request->apiToken)->first();
-
+            $request->language=$company->language;
             $jobs = Job::where('company_id', $company->id)->get();
 
             if ($jobs->isEmpty()) {

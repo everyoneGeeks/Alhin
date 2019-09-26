@@ -16,7 +16,7 @@ class nationality extends JsonResource
     {
         return [
             'id'=>$this->id,
-            "nationality"=>$this->nationality
+            "nationality"=> $request->language =='ar' ? $this->nationality_ar :$this->nationality_en, 
         ];
     }
 }

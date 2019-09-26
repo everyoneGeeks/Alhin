@@ -14,6 +14,9 @@ class Setting extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'about_us'=>$request->language =='ar' ? $this->about_us_ar :$this->about_us_en,
+            'terms_conditions'=>$request->language =='ar' ? $this->terms_conditions_ar :$this->terms_conditions_en,
+        ];
     }
 }

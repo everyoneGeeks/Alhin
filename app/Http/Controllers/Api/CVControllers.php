@@ -208,7 +208,7 @@ class CVControllers extends Controller
             #Start logic
             #check employee
             $employee = Employee::where('apiToken', $request->apiToken)->first();
-
+            $request->language=$employee->language;
             $cv = CV::where('employee_id', $employee->id)->first();
 
             if ($cv == null) {

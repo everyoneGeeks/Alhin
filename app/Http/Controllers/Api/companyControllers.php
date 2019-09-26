@@ -36,7 +36,7 @@ class companyControllers extends Controller
 */
 public function register(Request $request){
 $rules=[
-    'logo'=>'required|image',
+ //   'logo'=>'required|image',
     'name'=>'required',
     'email'=>'required|email|unique:company,email',
     'password'=>'required|min:6',
@@ -44,8 +44,8 @@ $rules=[
 ];
 
 $messages=[
-    'logo.required'=>'400',
-    'logo.image'=>'400',
+//    'logo.required'=>'400',
+ //   'logo.image'=>'400',
     'name.required'=>'400',
     'email.required'=>'400',
     'email.email'=>'400',
@@ -67,7 +67,7 @@ $company->apiToken=\Str::random(64);
 $company->email=$request->email;
 $company->password=Hash::make($request->password);
 $company->language=$request->language;
-$this->SaveFile($company,'logo','logo','images');
+//$this->SaveFile($company,'logo','logo','images');
 $company->save();
 return response()->json(['status'=>200,'company'=>new companyResource($company)]);
 #end logic
@@ -77,6 +77,50 @@ return response()->json(['status'=>200,'company'=>new companyResource($company)]
     }// end funcrion
 
 
+
+/**  
+* This api will be used to update  company
+* -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+* @param $request Illuminate\Http\Request;
+* @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+*/
+public function update(Request $request){
+    $rules=[
+        'apiToken'=>'required|exists:company,apiToken',
+        'logo'=>'image',
+        'password'=>'min:6',
+        'language'=>'in:ar,en'
+    ];
+    
+    $messages=[
+      'logo.image'=>'400',
+        'email.email'=>'400',
+        'email.unique'=>'409',
+        'language.in'=>'400'
+    ];
+        try{
+            $company=Company::where('apiToken',$request->apiToken)->first();
+            $rules['email']='email|unique:company,email,'.$company->id;
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if($validator->fails()) {
+                return response()->json(['status'=>(int)$validator->errors()->first()]);
+            }
+    #Start logic
+
+
+    $request->name == NULL ? :$company->name=$request->name;
+    $request->email == NULL ? :$company->email=$request->email;
+    $request->password == NULL ? :$company->password=Hash::make($request->password);
+    $request->language == NULL ? :$company->language=$request->language;
+    $request->logo == NULL ? :$this->SaveFile($company,'logo','logo','images');
+    $company->save();
+
+    return response()->json(['status'=>200,'company'=>new companyResource($company)]);
+    #end logic
+            }catch(Exception $e) {
+               return response()->json(['status' =>404]);
+             }
+        }// end funcrion    
 
 /**  
 * This api will be used to login  company with (password & email)
@@ -143,7 +187,7 @@ public function forgetPassword(Request $request){
             }
     #Start logic
     $company=Company::where('email',$request->email)->first();
-    $code=12345678;
+    $code=123456;
     $company->code=$code;
     $company->save();
 
@@ -188,7 +232,7 @@ public function validateCode(Request $request){
         return response()->json(['status'=>408]);
     }
     $company->code=NULL;
-    $company->tmpApiToken=Str::random(64);
+    $company->tmpApiToken=\Str::random(64);
     $company->save();
 
     return response()->json(['status'=>200,'tmpApiToken'=>$company->tmpApiToken]);

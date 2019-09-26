@@ -19,8 +19,9 @@ class employee extends JsonResource
             'apiToken'=>$this->apiToken,
             'name'=>$this->name,
             'email'=>$this->email,
-            'logo'=>$this->logo,
-            'jobs'=>cv::collection($this->whenLoaded('cv'))
+            'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
+            'language'=>$this->language,
+            'jobs'=>Cv::collection($this->whenLoaded('cv'))
         ];
     }
 }
