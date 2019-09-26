@@ -1,5 +1,5 @@
 
-@extends('layout.app',['title'=>'المستخدمين' ,'subTitle'=>'ادارة المستخدمين'])
+@extends('layout.app',['title'=>'الشركات' ,'subTitle'=>'ادارة الشركات'])
 @section('style')
   <!-- DataTables -->
   <link rel="stylesheet" href="{{asset('plugins/datatables/dataTables.bootstrap4.css')}}">
@@ -7,10 +7,10 @@
 
 @section('content')
 
-@component('components.panel',['subTitle'=>' بيانات المستخدم'])
-@if($users->isEmpty())
+@component('components.panel',['subTitle'=>' بيانات الشركات'])
+@if($companies->isEmpty())
 
-@component('components.empty',['section'=>'مستخدميين ']) @endcomponent
+@component('components.empty',['section'=>'شركات ']) @endcomponent
 
 @else 
 
@@ -19,26 +19,21 @@
         <tr>
             <th>الاسم  </th>
             <th>الايميل</th>
-            <th> الصور</th>
-            <th>الهاتف</th>
-            <th>الحالة</th>
-            <th>رصيد حساب</th>
+            <th>الحاله</th>
+            <th>تاريخ الانضمام</th>
         </tr>
         </thead>
         <tbody>  
-@foreach($users as $user)
+@foreach($companies as $company)
         <tr>
-<th> <a href="/user/info/{{$user->id}}">{{$user->name}}</th>
-<th> {{$user->email}}</th>
-<th><img src="{{asset($user->image)}}" width=50px > </th>
-<th> {{$user->phone}}</th>
-@if($user->is_active == 1)
-<th><a  href="/user/status/{{$user->id}}" class="btn btn-block btn-success btn-sm"> مفعل</a></th>
+<th> <a href="/company/info/{{$company->id}}">{{$company->name}}</th>
+<th> {{$company->email}}</th>
+@if($company->is_active == 1)
+<th><a  href="/company/status/{{$company->id}}" class="btn btn-block btn-success btn-sm"> مفعل</a></th>
 @else
-<th><a  href="/user/status/{{$user->id}}" class="btn btn-block btn-danger btn-flat"> غير مفعل </a></th>
+<th><a  href="/company/status/{{$company->id}}" class="btn btn-block btn-danger btn-flat"> غير مفعل </a></th>
 @endif
-
-<th> $ {{$user->balance}}</th>
+<th>{{Carbon\Carbon::parse($company->created_at)->diffForHumans()}}</th>
 
           
         </tr>
@@ -47,12 +42,11 @@
         </tbody>
         <tfoot>
         <tr>
-            <th>الاسم  </th>
-            <th>الايميل</th>
-            <th> الصور</th>
-            <th>الهاتف</th>
-            <th>الحالة</th>
-            <th>رصيد حساب</th>
+          <th>الاسم  </th>
+          <th>الايميل</th>
+          <th>الحاله</th>
+          <th>تاريخ الانضمام</th>
+
         </tr>
         </tfoot>
         </table>

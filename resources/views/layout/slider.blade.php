@@ -30,20 +30,20 @@
             
              <!-- users Route-->  
             <li class="nav-item ">
-              <a href="/users" class="nav-link {{ Request::is(Route::currentRouteName() == 'users') ? 'active' : '' }}">
+              <a href="/employees" class="nav-link {{ Request::is(Route::currentRouteName() == 'employees') ? 'active' : '' }}">
                 <i class="nav-icon  fa fa-users" aria-hidden="true"></i>
                 <p>
-                 المستخدميين
+                 الموظفين
                 </p>
               </a>
             </li>
             
              <!-- providers Route-->  
              <li class="nav-item ">
-              <a href="/providers" class="nav-link {{ Request::is(Route::currentRouteName() == 'providers') ? 'active' : '' }}">
+              <a href="/companies" class="nav-link {{ Request::is(Route::currentRouteName() == 'companies') ? 'active' : '' }}">
                 <i class="nav-icon  fa fa-users" aria-hidden="true"></i>
                 <p>
-                 المندوبين
+                 الشركات
                 </p>
               </a>
             </li>   
