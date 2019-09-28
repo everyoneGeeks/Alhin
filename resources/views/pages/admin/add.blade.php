@@ -32,9 +32,16 @@
                     <label class="form-check-label" for="exampleCheck1"> ادمن</label>
                   </div>
                   </div>
-                  @component('components.checkbox',['title'=>' المستخدميين','section'=>'users'])@endcomponent
-                  @component('components.checkbox',['title'=>' المندوبين','section'=>'provider'])@endcomponent
-                  @component('components.checkbox',['title'=>' الاقسام','section'=>'category'])@endcomponent
+                  @component('components.checkbox',['title'=>' الموظفين','section'=>'employee'])@endcomponent
+                  @component('components.checkbox',['title'=>' الشركات','section'=>'company'])@endcomponent
+                  @component('components.checkbox',['title'=>' الدول','section'=>'country'])@endcomponent
+                  @component('components.checkbox',['title'=>' الدين','section'=>'religion'])@endcomponent
+                  @component('components.checkbox',['title'=>' الاعلانات','section'=>'ads'])@endcomponent
+                  @component('components.checkbox',['title'=>' الاعدادات','section'=>'app_setting'])@endcomponent
+
+                  @component('components.checkbox',['title'=>' الشكاوي والاقتراحات','section'=>'contact'])@endcomponent
+                  @component('components.checkbox',['title'=>' الجنسية','section'=>'nationality'])@endcomponent
+       
                   
                 </div>
                 <!-- /.card-body -->

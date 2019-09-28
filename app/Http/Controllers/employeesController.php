@@ -59,15 +59,29 @@ public function list(){
             $Employee->is_active = '1';
             $Employee->save();
 
-            Notify::success('تم تفعيل المستخدم بنجاح', 'تغير حالة المستخدم ');
+            Notify::success('تم تفعيل الموظف بنجاح', 'تغير حالة الموظف ');
         }else{
             $Employee->is_active = '0';
             $Employee->save();
 
-            Notify::success('تم الغاء تفعيل المستخدم بنجاح', 'تغير حالة المستخدم ');
+            Notify::success('تم الغاء تفعيل الموظف بنجاح', 'تغير حالة الموظف ');
         }
     
         return back();
     }
+    /**  
+    * delete  employee
+    * @pararm int $id user id 
+    * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+    */
+    public function delete($id){
+        $Employee=Employee::where('id',$id)->delete();
+
+
+            Notify::success('تم حذف  الموظف بنجاح', 'حذف  الموظف ');
+        
     
+        return back();
+    }    
 }

@@ -1,5 +1,5 @@
 
-@extends('layout.app',['title'=>'الموظفين' ,'subTitle'=>'ادارة الموظفين'])
+@extends('layout.app',['title'=>'الشكاوي والاقتراحات' ,'subTitle'=>'ادارة الشكاوي والاقتراحات'])
 @section('style')
   <!-- DataTables -->
   <link rel="stylesheet" href="{{asset('plugins/datatables/dataTables.bootstrap4.css')}}">
@@ -7,35 +7,30 @@
 
 @section('content')
 
-@component('components.panel',['subTitle'=>' بيانات الموظفين'])
-@if($Employees->isEmpty())
+@component('components.panel',['subTitle'=>'  الرسائل'])
+@if($contacts->isEmpty())
 
-@component('components.empty',['section'=>'موظفين ']) @endcomponent
+@component('components.empty',['section'=>'رساله ']) @endcomponent
 
 @else 
 
 <table id="example2" class="table table-bordered table-hover">
         <thead>
         <tr>
-            <th>الاسم  </th>
             <th>الايميل</th>
-            <th>الحاله</th>
+            <th>الرساله</th>
             <th>تاريخ الانضمام</th>
             <th> حذف</th>
         </tr>
         </thead>
         <tbody>  
-@foreach($Employees as $Employee)
+@foreach($contacts as $contact)
         <tr>
-<th> <a href="/employee/info/{{$Employee->id}}">{{$Employee->name}}</th>
-<th> {{$Employee->email}}</th>
-@if($Employee->is_active == 1)
-<th><a  href="/employee/status/{{$Employee->id}}" class="btn btn-block btn-success btn-sm"> مفعل</a></th>
-@else
-<th><a  href="/employee/status/{{$Employee->id}}" class="btn btn-block btn-danger btn-flat"> غير مفعل </a></th>
-@endif
-<th>{{Carbon\Carbon::parse($Employee->created_at)->diffForHumans()}}</th>
-<th><a  href="/employee/delete/{{$Employee->id}}" class="btn btn-block btn-danger btn-flat"> حذف  </a></th>
+<th> {{$contact->email}}</th>
+<th> {{$contact->message}}</th>
+
+<th>{{Carbon\Carbon::parse($contact->created_at)->diffForHumans()}}</th>
+<th><a  href="/contact/delete/{{$contact->id}}" class="btn btn-block btn-danger btn-flat"> حذف  </a></th>
 
           
         </tr>
@@ -44,11 +39,10 @@
         </tbody>
         <tfoot>
         <tr>
-          <th>الاسم  </th>
-          <th>الايميل</th>
-          <th>الحاله</th>
-          <th>تاريخ الانضمام</th>
-          <th> حذف</th>
+            <th>الايميل</th>
+            <th>الرساله</th>
+            <th>تاريخ الانضمام</th>
+            <th> حذف</th>
 
         </tr>
         </tfoot>

@@ -11,7 +11,7 @@ class CV extends Model
     
     public function nationality()
     {
-        return $this->belongsTo('App\nationality','nationality_id');
+        return $this->belongsTo('App\nationality','nationality_id')->withTrashed();
     }
 
     public function employee ()

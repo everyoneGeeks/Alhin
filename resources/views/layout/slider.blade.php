@@ -28,7 +28,7 @@
 
             </li>
             
-             <!-- users Route-->  
+             <!-- employees Route-->  
             <li class="nav-item ">
               <a href="/employees" class="nav-link {{ Request::is(Route::currentRouteName() == 'employees') ? 'active' : '' }}">
                 <i class="nav-icon  fa fa-users" aria-hidden="true"></i>
@@ -38,7 +38,7 @@
               </a>
             </li>
             
-             <!-- providers Route-->  
+             <!-- companies Route-->  
              <li class="nav-item ">
               <a href="/companies" class="nav-link {{ Request::is(Route::currentRouteName() == 'companies') ? 'active' : '' }}">
                 <i class="nav-icon  fa fa-users" aria-hidden="true"></i>
@@ -48,26 +48,61 @@
               </a>
             </li>   
 
-             <!-- categories Route-->  
+             <!-- countries Route-->  
              <li class="nav-item ">
-              <a href="/categories" class="nav-link {{ Request::is(Route::currentRouteName() == 'categories') ? 'active' : '' }}">
+              <a href="/countries" class="nav-link {{ Request::is(Route::currentRouteName() == 'countries') ? 'active' : '' }}">
                 <i class="nav-icon  fa  fa-book" aria-hidden="true"></i>
                 <p>
-                 الاقسام
+                 الدول
                 </p>
               </a>
             </li>   
-             <!-- shop levels Route-->  
+             <!-- religions Route-->  
              <li class="nav-item ">
           
-              <a href="/shop/levels" class="nav-link {{ Request::is(Route::currentRouteName() == 'shop.levels') ? 'active' : '' }}">
+              <a href="/religions" class="nav-link {{ Request::is(Route::currentRouteName() == 'religions') ? 'active' : '' }}">
                 <i class="nav-icon  fa  fa-book" aria-hidden="true"></i>
                 <p>
-                 مستوي المتجر
+                  الديانة
                 </p>
               </a>
             </li> 
-            
+
+             <!-- nationality Route-->  
+             <li class="nav-item ">
+          
+                <a href="/nationalitys" class="nav-link {{ Request::is(Route::currentRouteName() == 'nationalitys') ? 'active' : '' }}">
+                  <i class="nav-icon  fa  fa-book" aria-hidden="true"></i>
+                  <p>
+                    الجنسية
+                  </p>
+                </a>
+              </li>     
+              
+              
+             <!-- contact Route-->  
+             <li class="nav-item ">
+          
+                <a href="/contact" class="nav-link {{ Request::is(Route::currentRouteName() == 'contact') ? 'active' : '' }}">
+                  <i class="nav-icon  fa  fa-book" aria-hidden="true"></i>
+                  <p>
+                    الشكاوي والاقتراحات
+                  </p>
+                </a>
+              </li>    
+              
+              
+             <!-- setting Route-->  
+             <li class="nav-item ">
+          
+                <a href="/setting" class="nav-link {{ Request::is(Route::currentRouteName() == 'setting') ? 'active' : '' }}">
+                  <i class="nav-icon  fa  fa-book" aria-hidden="true"></i>
+                  <p>
+                    اعدادات التطبيق
+                  </p>
+                </a>
+              </li>                  
+              
           <!-- admin Route-->  
           <li class="nav-item ">
           
@@ -78,6 +113,17 @@
             </p>
           </a>
         </li> 
+
+                  <!-- admin Route-->  
+                  <li class="nav-item ">
+          
+                      <a href="/ads" class="nav-link {{ Request::is(Route::currentRouteName() == 'ads') ? 'active' : '' }}">
+                        <i class="nav-icon  fa  fa-book" aria-hidden="true"></i>
+                        <p>
+                        ادارة الاعلانات
+                        </p>
+                      </a>
+                    </li> 
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

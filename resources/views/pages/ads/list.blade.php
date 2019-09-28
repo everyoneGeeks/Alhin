@@ -1,5 +1,5 @@
 
-@extends('layout.app',['title'=>'المسئولين'])
+@extends('layout.app',['title'=>'الاعلانات'])
 @section('style')
   <!-- DataTables -->
   <link rel="stylesheet" href="{{asset('plugins/datatables/dataTables.bootstrap4.css')}}">
@@ -7,45 +7,40 @@
 
 @section('content')
 
-@component('components.panel',['subTitle'=>' ادارة المسئولين'])
-@if($admins->isEmpty())
+@component('components.panel',['subTitle'=>' ادارة الاعلانات'])
+@if($Ads->isEmpty())
 
-@component('components.empty',['section'=>'مسئولين ']) @endcomponent
+@component('components.empty',['section'=>'اعلان ']) @endcomponent
 
 @else 
 
 <table id="example2" class="table table-bordered table-hover">
         <thead>
         <tr>
-            <th>الاسم  </th>
-            <th>الايميل </th>
-            <th>النوع</th>
-            <th>الافعال</th>
+            <th>رابط الاعلان</th>
+            <th>الصورة</th>
+            <th> التاريخ</th>
+            <th>تعديل</th>
             <th>حذف</th>
         </tr>
         </thead>
         <tbody>  
-@foreach($admins as $admin)
+@foreach($Ads as $ad)
         <tr>
-<th> <a href="/admin/info/{{$admin->id}}">{{$admin->name}}</a></th>
-<th> {{$admin->email}}</th>
-@if($admin->is_super_admins == 1)
-<th> <span class="badge badge-success h3">الادمن</span></th>
-@else
-<th><span class="badge badge-warning">مسئول </span>  </a></th>
-@endif
-<th><a href="/admin/edit/{{$admin->id}}" class="btn btn-block btn-info btn-flat"> تعديل </a></th>
-<th><a href="/admin/delete/{{$admin->id}}" class="btn btn-block btn-danger btn-flat"> حذف </a></th>
+<th> <a href="{{ $ad->url }}" >{{ $ad->url }}</a></th>
+<th><img src="{{asset($ad->image)}}" width="50"></a></th>
+<th>{{Carbon\Carbon::parse($ad->created_at)->diffForHumans()}}</th>
+<th><a href="/ads/edit/{{$ad->id}}" class="btn btn-block btn-info btn-flat"> تعديل </a></th>
+<th><a href="/ads/delete/{{$ad->id}}" class="btn btn-block btn-danger btn-flat"> حذف </a></th>
         </tr>
-
         @endforeach  
         </tbody>
         <tfoot>
         <tr>
-        <th>الاسم  </th>
-            <th>الايميل </th>
-            <th>النوع</th>
-            <th>الافعال</th>
+            <th>رابط الاعلان</th>
+            <th>الصورة</th>
+            <th> التاريخ</th>
+            <th>تعديل</th>
             <th>حذف</th>
         </tr>
         </tfoot>
@@ -56,7 +51,7 @@
 @slot('footer')
 <div class="col-lg-4">
 
-<a  href="/admin/add" class="btn btn-block btn-success btn-lg"> <i class="fa fa-plus" aria-hidden="true"></i> اضافة مسئول  </a>
+<a  href="/ads/add" class="btn btn-block btn-success btn-lg"> <i class="fa fa-plus" aria-hidden="true"></i> اضافة اعلان  </a>
 </div>
 @endslot
 
