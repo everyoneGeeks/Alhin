@@ -1,10 +1,4 @@
 <?php
-Route::get('/home', function () {
-
-    return view('welcome');
-})->name('dashboard');
-
-
 Route::group(['middleware' => ['auth']], function() {
 
 
@@ -136,6 +130,11 @@ Route::group(['middleware' => 'superAdmin'], function()
 });
 #----------------------------------------------------------------------------------
 
+
+
+Route::get('/home','dashBoardController@index')->name('dashboard');
+Route::get('/','dashBoardController@index')->name('dashboard');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout.get');
 });
 
 Auth::routes(['register' => false, 'verify' => false]);

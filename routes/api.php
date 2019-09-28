@@ -21,20 +21,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 #-----------------------------------------
 Route::post('/register/company',"Api\companyControllers@register");
 Route::post('/update/company',"Api\companyControllers@update");
-Route::post('/login/company',"Api\companyControllers@login");
-Route::post('/forgetPassword/company',"Api\companyControllers@forgetPassword");
-Route::post('/validateCode/company',"Api\companyControllers@validateCode");
-Route::post('/changePassword/company',"Api\companyControllers@changePassword");
+
+#login
+Route::post('/login',"Api\companyControllers@login");
+Route::post('/forgetPassword',"Api\companyControllers@forgetPassword");
+Route::post('/validateCode',"Api\companyControllers@validateCode");
+Route::post('/changePassword',"Api\companyControllers@changePassword");
 
 #------------------------------------------
 #employee
 #-----------------------------------------
 Route::post('/register/employee',"Api\EmployeeControllers@register");
 Route::post('/update/employee',"Api\EmployeeControllers@update");
-Route::post('/login/employee',"Api\EmployeeControllers@login");
-Route::post('/forgetPassword/employee',"Api\EmployeeControllers@forgetPassword");
-Route::post('/validateCode/employee',"Api\EmployeeControllers@validateCode");
-Route::post('/changePassword/employee',"Api\EmployeeControllers@changePassword");
 
 #------------------------------------------
 #Ads

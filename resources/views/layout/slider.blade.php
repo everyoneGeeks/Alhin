@@ -19,7 +19,7 @@
 
             <!-- dashboard Route-->                 
             <li class="nav-item ">
-              <a href="/dashboard" class="nav-link {{ Request::is(Route::currentRouteName() == 'dashboard') ? 'active' : '' }}">
+              <a href="/home" class="nav-link {{ Request::is(Route::currentRouteName() == 'home') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-dashboard"></i>
                 <p>
                  الاحصائيات
