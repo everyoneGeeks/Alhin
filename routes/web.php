@@ -10,8 +10,8 @@ Route::group(['middleware' => ['auth']], function() {
 */
 Route::get('/employees','employeesController@list')->name('employees');
 Route::get('/employee/info/{id}','employeesController@info')->name('employee.info')->where('id', '[0-9]+');
-Route::get('/employee/status/{id}','employeesController@status')->name('employee.status')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/employee/delete/{id}','employeesController@delete')->name('employee.delete')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/employee/status/{id}','employeesController@status')->name('employee.status')->where('id', '[0-9]+')->middleware('role:employee,edit');
+Route::get('/employee/delete/{id}','employeesController@delete')->name('employee.delete')->where('id', '[0-9]+')->middleware('role:employee,delete');
 #----------------------------------------------------------------------------------
 
 /*
@@ -22,9 +22,9 @@ Route::get('/employee/delete/{id}','employeesController@delete')->name('employee
 */
 Route::get('/companies','companiesController@list')->name('companies');
 Route::get('/company/info/{id}','companiesController@info')->name('company.info')->where('id', '[0-9]+');
-Route::get('/company/status/{id}','companiesController@status')->name('company.status')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/company/job/{id}','companiesController@job')->name('company.job')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/company/delete/{id}','companiesController@delete')->name('company.delete')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/company/status/{id}','companiesController@status')->name('company.status')->where('id', '[0-9]+')->middleware('role:company,edit');
+Route::get('/company/job/{id}','companiesController@job')->name('company.job')->where('id', '[0-9]+');
+Route::get('/company/delete/{id}','companiesController@delete')->name('company.delete')->where('id', '[0-9]+')->middleware('role:company,delete');
 #----------------------------------------------------------------------------------
 
 
@@ -35,11 +35,11 @@ Route::get('/company/delete/{id}','companiesController@delete')->name('company.d
 | this will handle all country part
 */
 Route::get('/countries','CountriesController@list')->name('countries');
-Route::get('/country/edit/{id}','CountriesController@edit')->name('country.edit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/country/edit/{id}','CountriesController@editSubmit')->name('country.edit.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/country/add','CountriesController@add')->name('country.add')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/country/add','CountriesController@addSubmit')->name('country.add.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/country/delete/{id}','CountriesController@delete')->name('country.delete')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/country/edit/{id}','CountriesController@edit')->name('country.edit')->where('id', '[0-9]+')->middleware('role:country,edit');
+Route::post('/country/edit/{id}','CountriesController@editSubmit')->name('country.edit.submit')->where('id', '[0-9]+')->middleware('role:country,edit');
+Route::get('/country/add','CountriesController@add')->name('country.add')->where('id', '[0-9]+')->middleware('role:country,add');
+Route::post('/country/add','CountriesController@addSubmit')->name('country.add.submit')->where('id', '[0-9]+')->middleware('role:country,add');
+Route::get('/country/delete/{id}','CountriesController@delete')->name('country.delete')->where('id', '[0-9]+')->middleware('role:country,delete');
 #----------------------------------------------------------------------------------
 
 /*
@@ -49,11 +49,11 @@ Route::get('/country/delete/{id}','CountriesController@delete')->name('country.d
 | this will handle all religion part
 */
 Route::get('/religions','religionsController@list')->name('religions');
-Route::get('/religion/edit/{id}','religionsController@edit')->name('religion.edit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/religion/edit/{id}','religionsController@editSubmit')->name('religion.edit.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/religion/add','religionsController@add')->name('religion.add')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/religion/add','religionsController@addSubmit')->name('religion.add.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/religion/delete/{id}','religionsController@delete')->name('religion.delete')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/religion/edit/{id}','religionsController@edit')->name('religion.edit')->where('id', '[0-9]+')->middleware('role:religion,edit');
+Route::post('/religion/edit/{id}','religionsController@editSubmit')->name('religion.edit.submit')->where('id', '[0-9]+')->middleware('role:religion,edit');
+Route::get('/religion/add','religionsController@add')->name('religion.add')->where('id', '[0-9]+')->middleware('role:religion,add');
+Route::post('/religion/add','religionsController@addSubmit')->name('religion.add.submit')->where('id', '[0-9]+')->middleware('role:religion,add');
+Route::get('/religion/delete/{id}','religionsController@delete')->name('religion.delete')->where('id', '[0-9]+')->middleware('role:religion,delete');
 #--------------------------------------------------------------------------
 
 
@@ -66,11 +66,11 @@ Route::get('/religion/delete/{id}','religionsController@delete')->name('religion
 | this will handle all nationality part
 */
 Route::get('/nationalitys','nationalitysController@list')->name('nationalitys');
-Route::get('/nationality/edit/{id}','nationalitysController@edit')->name('nationality.edit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/nationality/edit/{id}','nationalitysController@editSubmit')->name('nationality.edit.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/nationality/add','nationalitysController@add')->name('nationality.add')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/nationality/add','nationalitysController@addSubmit')->name('nationality.add.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/nationality/delete/{id}','nationalitysController@delete')->name('nationality.delete')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/nationality/edit/{id}','nationalitysController@edit')->name('nationality.edit')->where('id', '[0-9]+')->middleware('role:nationality,edit');
+Route::post('/nationality/edit/{id}','nationalitysController@editSubmit')->name('nationality.edit.submit')->where('id', '[0-9]+')->middleware('role:nationality,edit');
+Route::get('/nationality/add','nationalitysController@add')->name('nationality.add')->where('id', '[0-9]+')->middleware('role:nationality,add');
+Route::post('/nationality/add','nationalitysController@addSubmit')->name('nationality.add.submit')->where('id', '[0-9]+')->middleware('role:nationality,add');
+Route::get('/nationality/delete/{id}','nationalitysController@delete')->name('nationality.delete')->where('id', '[0-9]+')->middleware('role:nationality,delete');
 #--------------------------------------------------------------------------
 
 
@@ -81,7 +81,7 @@ Route::get('/nationality/delete/{id}','nationalitysController@delete')->name('na
 | this will handle all contact part
 */
 Route::get('/contact','contactController@list')->name('contact');
-Route::get('/contact/delete/{id}','contactController@delete')->name('contact.delete')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/contact/delete/{id}','contactController@delete')->name('contact.delete')->where('id', '[0-9]+')->middleware('role:contact,delete');
 #----------------------------------------------------------------------------------
 
 
@@ -92,11 +92,11 @@ Route::get('/contact/delete/{id}','contactController@delete')->name('contact.del
 | this will handle all ads part
 */
 Route::get('/ads','adsController@list')->name('ads');
-Route::get('/ads/edit/{id}','adsController@edit')->name('ads.edit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/ads/edit/{id}','adsController@editSubmit')->name('ads.edit.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/ads/add','adsController@add')->name('ads.add')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::post('/ads/add','adsController@addSubmit')->name('ads.add.submit')->where('id', '[0-9]+')->middleware('role:users,edit');
-Route::get('/ads/delete/{id}','adsController@delete')->name('ads.delete')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/ads/edit/{id}','adsController@edit')->name('ads.edit')->where('id', '[0-9]+')->middleware('role:ads,edit');
+Route::post('/ads/edit/{id}','adsController@editSubmit')->name('ads.edit.submit')->where('id', '[0-9]+')->middleware('role:ads,edit');
+Route::get('/ads/add','adsController@add')->name('ads.add')->where('id', '[0-9]+')->middleware('role:ads,add');
+Route::post('/ads/add','adsController@addSubmit')->name('ads.add.submit')->where('id', '[0-9]+')->middleware('role:ads,add');
+Route::get('/ads/delete/{id}','adsController@delete')->name('ads.delete')->where('id', '[0-9]+')->middleware('role:ads,delete');
 #--------------------------------------------------------------------------
 
 
@@ -107,8 +107,8 @@ Route::get('/ads/delete/{id}','adsController@delete')->name('ads.delete')->where
 | this will handle all App setting  part
 */
 Route::get('/setting','settingController@list')->name('setting');
-Route::get('/app/setting/edit/{id}','settingController@edit')->name('setting.edit')->where('id', '[0-9]+')->middleware('role:users,delete');
-Route::post('/app/setting/edit/{id}','settingController@editSubmit')->name('setting.edit.submit')->where('id', '[0-9]+')->middleware('role:users,delete');
+Route::get('/app/setting/edit/{id}','settingController@edit')->name('setting.edit')->where('id', '[0-9]+')->middleware('role:setting,edit');
+Route::post('/app/setting/edit/{id}','settingController@editSubmit')->name('setting.edit.submit')->where('id', '[0-9]+')->middleware('role:setting,delete');
 #----------------------------------------------------------------------------------
 
 /*
