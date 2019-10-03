@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EmployeCV extends JsonResource
+class company extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,11 @@ class EmployeCV extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'apiToken'=>$this->apiToken,
             'name'=>$this->name,
             'email'=>$this->email,
-            'logo'=>isset($this->logo),
+            'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
             'language'=>$this->language,
-            'apiToken'=>$this->apiToken,
-            
+            'jobs'=>Job::collection($this->whenLoaded('jobs'))
         ];
     }
 }

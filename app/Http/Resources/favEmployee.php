@@ -14,6 +14,6 @@ class favEmployee extends JsonResource
      */
     public function toArray($request)
     {
-        return new EmployeCV($this->employee);
+        return new employeeId($this->employee);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Cv extends JsonResource
+class CvInfo extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,12 +23,14 @@ class Cv extends JsonResource
             'martial_status'=>$this->martial_status,
             'residence_country'=>new residenceCountry($this->residence_country),
             'religion'=>new religion($this->religion),
-            'employee'=>new EmployeCV($this->employee),
             'total_experience'=>$this->total_experience,
             'note'=>$this->note,
             'cv'=>$this->cv,
+            "expectedSalary"=>$this->expected_salary,
             'workExperience'=>new workExperience(json_decode($this->work_experience)),
-            
+            'rate'=>$this->rate,
+            'isFav'=>$this->isfav,
+            'review'=>$this->review,
 
         ];
     }

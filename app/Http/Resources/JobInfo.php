@@ -18,10 +18,15 @@ class Jobs extends JsonResource
             'id'=>$this->id,
             'job_title'=>$request->language =='ar' ? $this->job_title_ar :$this->job_title_en,
             'image'=>$this->image,
-            'companyName'=>$this->company->name,
+            'phone'=>$this->phone,
+            'email'=>$this->email,
+            'total_experience'=>$this->total_exprience,
+            'residence_country'=>new residenceCountry($this->residence_country),
+            'company'=>new CompnayJobs($this->company),
             'rate'=>$this->rate,
             'isFav'=>$this->isfav,
-            'review'=>$this->review
+            'review'=>$this->review,
+            "salary"=>$this->salary
         ];
     }
 }

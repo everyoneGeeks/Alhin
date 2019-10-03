@@ -27,7 +27,7 @@ class Favourite extends Controller
         
         $messages=[
             'apiToken.required'=>'400',
-            'apiToken.exists'=>'400',
+            'apiToken.exists'=>'405',
         ];
             try{
                 $validator = \Validator::make($request->all(), $rules, $messages);
@@ -39,14 +39,14 @@ class Favourite extends Controller
         $request->language=$company->language;
         #check if code is right
         $favEmployee=favouriteCompany::where('company_id',$company->id)
-        ->with('employee')->get();
+        ->with(['employee'=>function($q){
+            $q->with('cv');
+        }])->get();
 
 
         if($favEmployee->isEmpty()){
             return response()->json(['status'=>204]);
         }
-        
-    
         return response()->json(['status'=>200,'favourite'=>favEmployee::collection($favEmployee)]);
         #end logic
                 }catch(Exception $e) {

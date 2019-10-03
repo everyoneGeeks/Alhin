@@ -18,11 +18,11 @@ class AdsControllers extends Controller
     public function getAds(){
             try{
         #Start logic    
-        $Ads=Ads::first();
+        $Ads=Ads::get();
               if($Ads == NULL){
                 return response()->json(['status'=>204]);
               }
-        return response()->json(['status'=>200,'ads'=>new adsResource($Ads)]);
+        return response()->json(['status'=>200,'ads'=>adsResource::collection($Ads)]);
         #end logic
                 }catch(Exception $e) {
                    return response()->json(['status' =>404]);

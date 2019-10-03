@@ -40,7 +40,6 @@ class companyControllers extends Controller
     public function register(Request $request)
     {
         $rules = [
-            //   'logo'=>'required|image',
             'name' => 'required',
             'email' => 'required|email|unique:company,email',
             'password' => 'required|min:6',
@@ -48,8 +47,6 @@ class companyControllers extends Controller
         ];
 
         $messages = [
-            //    'logo.required'=>'400',
-            //   'logo.image'=>'400',
             'name.required' => '400',
             'email.required' => '400',
             'email.email' => '400',
@@ -71,7 +68,6 @@ class companyControllers extends Controller
             $company->email = $request->email;
             $company->password = Hash::make($request->password);
             $company->language = $request->language;
-            //$this->SaveFile($company,'logo','logo','images');
             $company->save();
             return response()->json(['status' => 200, 'company' => new companyResource($company)]);
             #end logic
@@ -318,8 +314,8 @@ class companyControllers extends Controller
                 return response()->json(['status' => (int) $validator->errors()->first()]);
             }
             #Start logic
-            $company = Company::where('tmpApiToken', $request->tmpApiToken)->first();
-            $Employee = Employee::where('tmpApiToken', $request->tmpApiToken)->first();
+            $company = Company::where('tmpApiToken', $request->tmpToken)->first();
+            $Employee = Employee::where('tmpApiToken', $request->tmpToken)->first();
             #company
 
             if (!$company == null) {

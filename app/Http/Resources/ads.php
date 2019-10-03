@@ -15,7 +15,7 @@ class ads extends JsonResource
     public function toArray($request)
     {
         return [
-            'url'=>$this->url,
+            'id'=>$this->id,
             'image'=>$this->image
         ];
     }

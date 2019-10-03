@@ -98,6 +98,7 @@ class CVControllers extends Controller
             $cv = new CV;
             #checkIFNote NULL
             if ($request->note !== null) {$cv->note = $request->note;}
+            if ($request->expectedSalary !== null) {$cv->expected_salary = $request->expectedSalary;}
             $cv->phone = $request->phone;
             $cv->employee_id = $employee->id;
             $cv->date_of_birth = $request->date_of_birth;
@@ -157,7 +158,7 @@ class CVControllers extends Controller
 
             $cv = CV::where('employee_id', $employee->id)->first();
             $request->phone == null ?: $cv->phone = $request->phone;
-
+            $request->expectedSalary ==NULL ? :$cv->expected_salary=$request->expectedSalary ;
             $request->date_of_birth == null ?: $cv->date_of_birth = $request->date_of_birth;
             $request->martial_status == null ?: $cv->martial_status = $request->martial_status;
             $request->residence_country_id == null ?: $cv->residence_country_id = $request->residence_country_id;
