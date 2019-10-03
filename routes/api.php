@@ -50,10 +50,8 @@ Route::post('/nationality',"Api\SelectObjects@nationality");
 #------------------------------------------
 #favourite,company,employee
 #-----------------------------------------
-Route::post('/favourite/company',"Api\Favourite@favourite_company");
-Route::post('/MakeFavourite/company',"Api\Favourite@MakeFavourite_company");
-Route::post('/favourite/employee',"Api\Favourite@favourite_employee");
-Route::post('/MakeFavourite/employee',"Api\Favourite@MakeFavourite_employee");
+Route::post('/favourite',"Api\Favourite@favourite_company");
+Route::post('/makeFavourite',"Api\Favourite@MakeFavourite");
 
 
 #------------------------------------------

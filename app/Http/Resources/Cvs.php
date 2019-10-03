@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Cv extends JsonResource
+class Cvs extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,7 @@ class Cv extends JsonResource
             'id'=>$this->id,
             'job_title'=>$this->job_title,
             'employeeName'=>$this->employee->name,
-            'image'=>$this->image,
+            'photo'=>$this->photo,
             'rate'=>$this->rate,
             'isFav'=>$this->isfav,
             'review'=>$this->review,

@@ -6,7 +6,8 @@ use App\CV;
 use App\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\Cv as ResourcesCv;
+use App\Http\Resources\CvInfo as ResourcesCv;
+use App\Http\Resources\Cvs as ResourcesCvs;
 use Illuminate\Validation\Rule;
 use App\History;
 
@@ -33,12 +34,12 @@ class CVControllers extends Controller
         'apiToken' => 'required|exists:employee,apiToken',
         'phone' => 'required|unique:CV,phone',
         'date_of_birth' => 'required|date_format:Y-m-d',
-        'martial_status' => 'required|in:0,1',
+        'martial_status' => 'required|in:Single,Widowed,Married',
         'residence_country_id' => 'required|exists:residence_country,id',
         'religion_id' => 'required|exists:religion,id',
         'nationality_id' => 'required|exists:nationality,id',
         'total_experience' => 'required',
-        'cv' => 'required',
+        'photo' => 'required',
         'job_title' => 'required',
         'work_experience.*' => 'nullable',
         'work_experience.*.job_title' => 'required',
@@ -64,11 +65,10 @@ class CVControllers extends Controller
         'nationality_id.exists' => '405',
         'total_experience.required' => '400',
         'job_title.required' => '400',
-        'cv.required' => '400',
+        'photo.required' => '400',
         'work_experience.*.job_title.required' => '400',
         'work_experience.*.company_name.required' => '400',
         'work_experience.*.experirnce_years.required' => '400',
-
     ];
     /**
      * This api will to add new cv to employee
@@ -90,15 +90,15 @@ class CVControllers extends Controller
             $employee = Employee::where('apiToken', $request->apiToken)->first();
 
             $USER = CV::where('employee_id', $employee->id)->first();
-
             if ($USER !== null) {
                 return response()->json(['status' => 410]);
             }
 
             $cv = new CV;
-            #checkIFNote NULL
+            #checkIFNote & expectedSalary NULL
             if ($request->note !== null) {$cv->note = $request->note;}
             if ($request->expectedSalary !== null) {$cv->expected_salary = $request->expectedSalary;}
+
             $cv->phone = $request->phone;
             $cv->employee_id = $employee->id;
             $cv->date_of_birth = $request->date_of_birth;
@@ -107,7 +107,7 @@ class CVControllers extends Controller
             $cv->religion_id = $request->religion_id;
             $cv->total_experience = $request->total_experience;
             $cv->job_title = $request->job_title;
-            $this->SaveFile($cv, 'cv', 'cv', 'CV');
+            $this->SaveFile($cv, 'photo', 'photo', 'photo');
             $cv->nationality_id = $request->nationality_id;
             $cv->work_experience = $request->work_experience;
             $cv->created_at = \Carbon\Carbon::now();
@@ -130,18 +130,19 @@ class CVControllers extends Controller
     {
         #check employee
         $employee = Employee::where('apiToken', $request->apiToken)->first();
+
         #custom Validation to make Updat request
         $this->rules['phone'] = [
             Rule::unique('CV')->ignore($employee->id, 'employee_id')];
 
         $this->rules['date_of_birth'] = 'date_format:Y-m-d';
 
-        $this->rules['martial_status'] = 'in:0,1';
+        $this->rules['martial_status'] = 'in:Single,Widowed,Married';
         $this->rules['residence_country_id'] = 'exists:residence_country,id';
         $this->rules['religion_id'] = 'exists:religion,id';
         $this->rules['nationality_id'] = 'exists:nationality,id';
         $this->rules['total_experience'] = 'nullable';
-        $this->rules['cv'] = 'nullable';
+        $this->rules['photo'] = 'nullable';
         $this->rules['job_title'] = 'nullable';
         $this->rules['work_experience.*'] = 'nullable';
         $this->rules['work_experience.*.job_title'] = 'nullable';
@@ -156,8 +157,12 @@ class CVControllers extends Controller
 
             #Start logic
 
-            $cv = CV::where('employee_id', $employee->id)->first();
-            $request->phone == null ?: $cv->phone = $request->phone;
+            $cv = CV::where('employee_id',$employee->id)->first();
+          
+            if($cv == NULL){
+               return response()->json(['status'=>405]);
+           }
+            $request->phone == NULL ?: $cv->phone = $request->phone;
             $request->expectedSalary ==NULL ? :$cv->expected_salary=$request->expectedSalary ;
             $request->date_of_birth == null ?: $cv->date_of_birth = $request->date_of_birth;
             $request->martial_status == null ?: $cv->martial_status = $request->martial_status;
@@ -166,18 +171,12 @@ class CVControllers extends Controller
             $request->total_experience == null ?: $cv->total_experience = $request->total_experience;
             $request->job_title == null ?: $cv->job_title = $request->job_title;
             $request->note == null ?: $cv->note = $request->note;
-            $this->SaveFile($cv, 'cv', 'cv', 'CV');
+            $this->SaveFile($cv, 'photo', 'photo', 'photo');
             $request->nationality_id == null ?: $cv->nationality_id = $request->nationality_id;
             $request->work_experience == null ?: $cv->work_experience = $request->work_experience;
             $cv->created_at = \Carbon\Carbon::now();
             $cv->save();
 
-            if(request()->hasFile('cv')){
-                $History=new History();
-                $History->employee_id=$cv->employee_id;
-                $History->cv=$cv->cv;
-                $History->save();
-            }
             return response()->json(['status' => 200]);
             #end logic
         } catch (Exception $e) {
@@ -234,7 +233,7 @@ class CVControllers extends Controller
     public function search(Request $request)
     {
         $rules = [
-            'martial_status' => 'in:1,0',
+            'martial_status' => 'in:Single,Widowed,Married',
             "residence_country_id"=>"exists:residence_country,id",
             'most_resent'=>"in:1,0",
         ];
@@ -275,7 +274,7 @@ class CVControllers extends Controller
                 return response()->json(['status' => 204]);
             }
 
-            return response()->json(['status' => 200, 'cv' =>  ResourcesCv::collection($cv)]);
+            return response()->json(['status' => 200, 'cv' =>  ResourcesCvs::collection($cv)]);
             #end logic
         } catch (Exception $e) {
             return response()->json(['status' => 404]);

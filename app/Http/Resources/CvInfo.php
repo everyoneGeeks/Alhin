@@ -15,9 +15,9 @@ class CvInfo extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'phone'=>$this->phone,
+            'id'=>$this->id, 
             'job_title'=>$this->job_title,
+            'phone'=>$this->phone,
             'date_of_birth'=>$this->date_of_birth,
             'nationality'=>new nationality($this->nationality),
             'martial_status'=>$this->martial_status,
@@ -25,7 +25,7 @@ class CvInfo extends JsonResource
             'religion'=>new religion($this->religion),
             'total_experience'=>$this->total_experience,
             'note'=>$this->note,
-            'cv'=>$this->cv,
+            'photo'=>$this->photo,
             "expectedSalary"=>$this->expected_salary,
             'workExperience'=>new workExperience(json_decode($this->work_experience)),
             'rate'=>$this->rate,
