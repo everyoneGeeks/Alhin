@@ -22,10 +22,16 @@ class JobInfo extends JsonResource
             'email'=>$this->email,
             'total_experience'=>$this->total_exprience,
             'residence_country'=>new residenceCountry($this->residence_country),
-            'company'=>new CompnayJobs($this->company),
-            'rate'=>$this->rate,
+            'company'=>[
+                'id'=>$this->company->id,
+                'name'=>$this->company->name,
+                'email'=>$this->company->email,
+                'logo'=>isset($this->company->logo)== NULL ? NULL :$this->company->logo,
+                'language'=>$this->company->language,
+            ],
+            'rate'=>$this->rate->count() == NULL ? '0': $this->rate->sum('rate')/$this->rate->count(),
             'isFav'=>$this->isfav,
-            'review'=>$this->review,
+            'review'=>$this->view,
             "salary"=>$this->salary
         ];
     }

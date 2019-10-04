@@ -280,4 +280,53 @@ class CVControllers extends Controller
             return response()->json(['status' => 404]);
         }
     } // end funcrion
+
+
+
+
+
+
+    /**
+     * This api will to get cv info 
+     * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+     * @param $request Illuminate\Http\Request;
+     * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+     */
+    public function Info(Request $request)
+    {
+        $rules = [
+            'cvId' => 'required|exists:CV,id',
+            'language'=>'required|in:ar,en'
+        ];
+
+        $messages = [
+            'cvId.required' => '400',
+            'cvId.exists' => '405',
+            'language.required' => '400',
+            'language.id' => '405',
+        ];
+        try {
+            $validator = \Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json(['status' => (int) $validator->errors()->first()]);
+            }
+            #Start logic
+            #check employee
+
+
+            
+            $cv = CV::where('id', $request->cvId)->first();
+
+            if ($cv == null) {
+                return response()->json(['status' => 204]);
+            }
+
+
+            return response()->json(['status' => 200, 'cv' => new ResourcesCv($cv)]);
+            #end logic
+        } catch (Exception $e) {
+            return response()->json(['status' => 404]);
+        }
+    } // end funcrion
+
 }

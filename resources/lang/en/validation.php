@@ -129,9 +129,10 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
+
+        'apiToken'=>[
+            'required'=>'ssssss',
+        ]
     ],
 
     /*

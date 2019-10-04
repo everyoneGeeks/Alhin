@@ -12,4 +12,13 @@ class Company extends Model
     {
         return $this->hasMany('App\Job');
     }
+
+
+    public function rate ()
+    {
+        return $this->belongsTo('App\companyRate');
+    }
+
+
+
 }

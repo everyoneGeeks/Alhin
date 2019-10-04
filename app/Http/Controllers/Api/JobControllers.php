@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Jobs as ResourcesJobs;
+use App\Http\Resources\JobInfo as ResourcesJobInfo;
 use App\Job;
 use App\Company;
 
@@ -71,17 +72,18 @@ class JobControllers extends Controller
 
             $company = company::where('apiToken', $request->apiToken)->first();
 
-            $cv = new Job;
-            $cv->phone = $request->phone;
-            $cv->company_id = $company->id;
-            $cv->residence_country_id = $request->residence_country_id;
-            $cv->total_exprience = $request->total_exprience;
-            $cv->job_title_ar = $request->job_title_ar;
-            $cv->job_title_en = $request->job_title_en;
-            $this->SaveFile($cv, 'image', 'image', 'image');
-            $cv->email = $request->email;
-            $cv->created_at = \Carbon\Carbon::now();
-            $cv->save();
+            $job = new Job;
+            $job->phone = $request->phone;
+            $job->company_id = $company->id;
+            $job->residence_country_id = $request->residence_country_id;
+            $job->total_exprience = $request->total_exprience;
+            $job->job_title_ar = $request->job_title_ar;
+            $job->job_title_en = $request->job_title_en;
+            $request->salary == NULL  ?  :$job->salary = $request->salary;
+            $this->SaveFile($job, 'image', 'image', 'image');
+            $job->email = $request->email;
+            $job->created_at = \Carbon\Carbon::now();
+            $job->save();
 
             return response()->json(['status' => 200]);
             #end logic
@@ -123,20 +125,22 @@ class JobControllers extends Controller
             #Start logic
             #check company
             $company = company::where('apiToken', $request->apiToken)->first();
-            $company = Job::where('id', $request->jobId)->first();
 
-            $request->total_exprience == null ?: $company->total_exprience =$request->total_exprience; 
-            $request->phone == null ?: $company->phone = $request->phone;
-            $request->email == null ?: $company->email = $request->email;    
-            $request->martial_status == null ?: $company->martial_status = $request->martial_status;
-            $request->residence_country_id == null ?: $company->residence_country_id = $request->residence_country_id;
-            $request->job_title_ar == null ?: $company->job_title_ar = $request->job_title_ar;
-            $request->job_title_en == null ?: $company->job_title_en = $request->job_title_en;
-            $this->SaveFile($company, 'image', 'image', 'image');
-            $request->nationality_id == null ?: $company->nationality_id = $request->nationality_id;
-            $request->work_experience == null ?: $company->work_experience = $request->work_experience;
-            $company->created_at = \Carbon\Carbon::now();
-            $company->save();
+            $job = Job::where('id', $request->jobId)->first();
+            $request->salary == NULL  ?  :$job->salary = $request->salary;
+            $request->total_exprience == null ?: $job->total_exprience =$request->total_exprience; 
+            $request->phone == null ?: $job->phone = $request->phone;
+            $request->email == null ?: $job->email = $request->email;    
+            $request->martial_status == null ?: $job->martial_status = $request->martial_status;
+            $request->residence_country_id == null ?: $job->residence_country_id = $request->residence_country_id;
+            $request->job_title_ar == null ?: $job->job_title_ar = $request->job_title_ar;
+            $request->job_title_en == null ?: $job->job_title_en = $request->job_title_en;
+            $this->SaveFile($job, 'image', 'image', 'image');
+            $request->nationality_id == null ?: $job->nationality_id = $request->nationality_id;
+            $request->work_experience == null ?: $job->work_experience = $request->work_experience;
+            $job->created_at = \Carbon\Carbon::now();
+
+            $job->save();
 
             return response()->json(['status' => 200]);
             #end logic
@@ -241,6 +245,49 @@ class JobControllers extends Controller
             }
 
             return response()->json(['status' => 200, 'Jobs' =>  ResourcesJobs::collection($Job)]);
+            #end logic
+        } catch (Exception $e) {
+            return response()->json(['status' => 404]);
+        }
+    } // end funcrion    
+
+
+
+
+   /**
+     * This api will to get  job info 
+     * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+     * @param $request Illuminate\Http\Request;
+     * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+     */
+    public function info(Request $request)
+    {
+        $rules = [
+            'jobId' => 'required|exists:job,id',
+            'language'=>'required|in:ar,en'
+        ];
+
+        $messages = [
+            'jobId.required' => '400',
+            'jobId.exists' => '405',
+            'language.required' => '400',
+            'language.id' => '405',
+        ];
+        try {
+            $validator = \Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json(['status' => (int) $validator->errors()->first()]);
+            }
+            #Start logic
+
+            $job = Job::where('id',$request->jobId)->first();
+
+            if ($job ==NULL) {
+                return response()->json(['status' => 204]);
+            }
+
+
+            return response()->json(['status' => 200, 'jobs' => new ResourcesJobInfo($job)]);
             #end logic
         } catch (Exception $e) {
             return response()->json(['status' => 404]);

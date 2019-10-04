@@ -28,5 +28,12 @@ class CV extends Model
     {
         return $this->belongsTo('App\religion','religion_id');
     }
+
+
+
+    public function rate ()
+    {
+        return $this->hasMany('App\cvRate','cv_id');
+    }
     
 }

@@ -20,5 +20,8 @@ class Job extends Model
     {
         return $this->belongsTo('App\residenceCountry','residence_country_id');
     }
-
+    public function rate ()
+    {
+        return $this->hasMany('App\jobRate','job_id');
+    }
 }

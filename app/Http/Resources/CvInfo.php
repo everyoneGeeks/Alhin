@@ -28,9 +28,9 @@ class CvInfo extends JsonResource
             'photo'=>$this->photo,
             "expectedSalary"=>$this->expected_salary,
             'workExperience'=>new workExperience(json_decode($this->work_experience)),
-            'rate'=>$this->rate,
+            'rate'=>$this->rate->count() == NULL ? '0': $this->rate->sum('rate')/$this->rate->count(),
             'isFav'=>$this->isfav,
-            'review'=>$this->review,
+            'review'=>$this->view,
 
         ];
     }

@@ -40,14 +40,9 @@ public function appley(Request $request){
         'jobId'    =>'required|exists:job,id',
     ];
 
-    $messages = [
-        'apiToken.required' => '400',
-        'apiToken.exists' => '405',
-        'jobId.required' => '400',
-        'jobId.exists' => '405',
-    ];
+
         try{
-            $validator = \Validator::make($request->all(), $rules, $messages);
+            $validator = \Validator::make($request->all(), $rules);
             if($validator->fails()) {
                 return response()->json(['status'=>(int)$validator->errors()->first()]);
             }
@@ -104,10 +99,53 @@ public function getAppley(Request $request){
 
 
 
-    return response()->json(['status'=>200,'jobs'=>ResourceAppley::collection($jobs)]);
+    return response()->json(['status'=>200,'appley'=>ResourceAppley::collection($jobs)]);
     #end logic
             }catch(Exception $e) {
                return response()->json(['status' =>404]);
              }
         }// end funcrion        
+
+
+
+
+/**  
+*This api will to un appley Jobs  for   employee
+* -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+* @param $request Illuminate\Http\Request;
+* @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+*/
+public function unAppley(Request $request){
+    $rules = [
+        'apiToken' => 'required|exists:employee,apiToken',
+        'appley_id'=>'required|exists:applyed,id'
+
+    ];
+
+    $messages = [
+        'apiToken.required' => '400',
+        'apiToken.exists' => '405',
+        'appley_id.required' => '400',
+        'appley_id.exists' => '405',
+    ];
+        try{
+            $validator = \Validator::make($request->all(), $rules, $messages);
+            if($validator->fails()) {
+                return response()->json(['status'=>(int)$validator->errors()->first()]);
+            }
+            #Start logic
+            $employee = Employee::where('apiToken', $request->apiToken)->first();
+            $request->language=$employee->language;
+            #check if employee is Register 
+            $job=Appley::where('id',$request->appley_id)->delete();
+
+
+
+
+    return response()->json(['status'=>200]);
+    #end logic
+            }catch(Exception $e) {
+               return response()->json(['status' =>404]);
+             }
+        }// end funcrion                
 }

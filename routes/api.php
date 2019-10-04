@@ -61,7 +61,7 @@ Route::post('/cv/add',"Api\CVControllers@add");
 Route::post('/cv/update',"Api\CVControllers@update");
 Route::post('/cv/get',"Api\CVControllers@get");
 Route::post('/cv/search',"Api\CVControllers@search");
-
+Route::post('/cv/info',"Api\CVControllers@info");
 
 #------------------------------------------
 #Jobs part
@@ -70,14 +70,14 @@ Route::post('/job/add',"Api\JobControllers@add");
 Route::post('/job/update',"Api\JobControllers@update");
 Route::post('/job/get',"Api\JobControllers@get");
 Route::post('/job/search',"Api\JobControllers@search");
-
+Route::post('/job/info',"Api\JobControllers@info");
 
 #------------------------------------------
 #appley  for employee part
 #-----------------------------------------
 Route::post('/appley',"Api\AppleyControllers@appley");
 Route::post('/appley/get',"Api\AppleyControllers@getAppley");
-Route::post('/appley/get/employee',"Api\AppleyControllers@getAppleyEmployee");
+Route::post('/unappley',"Api\AppleyControllers@unAppley");
 
 #------------------------------------------
 #sendFirebaseToken,contact,appInfo,changeLang part
@@ -85,4 +85,5 @@ Route::post('/appley/get/employee',"Api\AppleyControllers@getAppleyEmployee");
 Route::post('/sendFirebaseToken',"Api\SelectObjects@sendFirebaseToken");
 Route::post('/contact',"Api\SelectObjects@contact");
 Route::post('/appInfo',"Api\SelectObjects@appInfo");
+Route::post('/view',"Api\SelectObjects@view");
 Route::post('/changeLang',"Api\SelectObjects@changeLang");

@@ -15,6 +15,8 @@ use App\nationality;
 use App\residenceCountry;
 use App\Company;
 use App\Employee;
+use App\Job;
+use App\CV;
 
 class SelectObjects extends Controller
 {
@@ -274,5 +276,52 @@ public function sendFirebaseToken(Request $request){
                return response()->json(['status' =>404]);
              }
 }// end funcrion     
+
+
+
+/**  
+* This api will used to add view to cv or job 
+* -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+* @param $request Illuminate\Http\Request;
+* @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+*/
+public function view(Request $request){
+    $rules=[
+        'cv_id'=>'exists:CV,id',
+        'job_id'=>'exists:job,id',
+    ];
+    
+    $messages=[
+        'cv_id.required'=>'400',
+        'cv_id.exists'=>'400',
+        'job_id.required'=>'405',
+        'job_id.exists'=>'405',
+    ];
+        try{
+            $validator = \Validator::make($request->all(), $rules, $messages);
+            if($validator->fails()) {
+                return response()->json(['status'=>(int)$validator->errors()->first()]);
+            }
+
+            if($request->job_id){
+                $job=Job::where('id',$request->job_id)->first();
+                $job->view+=1;
+                $job->save();
+                return response()->json(['status'=>200]);
+            }
+
+
+            if($request->cv_id){
+                $cv=CV::where('id',$request->cv_id)->first();
+                $cv->view+=1;
+                $cv->save();
+                return response()->json(['status'=>200]);
+            }
+            return response()->json(['status'=>405]);
+        return response()->json(['status'=>200]);
+            }catch(Exception $e) {
+               return response()->json(['status' =>404]);
+             }
+}// end funcrion    
 }
 
