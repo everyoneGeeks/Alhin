@@ -45,19 +45,19 @@ public function register(Request $request){
     $messages=[
        // 'logo.required'=>'400',
        // 'logo.image'=>'400',
-        'name.required'=>'400',
-        'email.required'=>'400',
-        'email.email'=>'400',
-        'email.unique'=>'409',
-        'password.required'=>'400',
-        'language.required'=>'400',
-        'password.min'=>'400',
-        'language.in'=>'400'
+        'name.required'=>$this->errorMessage[400][$request->language],
+        'email.required'=>$this->errorMessage[400][$request->language],
+        'email.email'=>$this->errorMessage[405][$request->language],
+        'email.unique'=>$this->errorMessage[409][$request->language],
+        'password.required'=>$this->errorMessage[400][$request->language],
+        'language.required'=>$this->errorMessage[400][$request->language],
+        'password.min'=>$this->errorMessage[400][$request->language],
+        'language.in'=>$this->errorMessage[400][$request->language]
     ];
         try{
             $validator = Validator::make($request->all(), $rules, $messages);
             if($validator->fails()) {
-                return response()->json(['status'=>(int)$validator->errors()->first()]);
+                return response()->json(['message'=>$validator->errors()->first()]);
             }
     #Start logic
     $employee=new Employee;
@@ -66,13 +66,12 @@ public function register(Request $request){
     $employee->email=$request->email;
     $employee->password=Hash::make($request->password);
     $employee->language=$request->language;
-   // $this->SaveFile($employee,'logo','logo','images');
     $employee->save();
     
-    return response()->json(['status'=>200,'employee'=>new employeeResource($employee)]);
+    return response()->json(['message'=>$this->errorMessage[200][$request->language],'employee'=>new employeeResource($employee)]);
     #end logic
             }catch(Exception $e) {
-               return response()->json(['status' =>404]);
+               return response()->json(['message' =>$this->errorMessage[404][$request->language]]);
              }
         }// end funcrion
     
@@ -91,17 +90,17 @@ public function update(Request $request){
     ];
     
     $messages=[
-      'logo.image'=>'400',
-        'email.email'=>'400',
-        'email.unique'=>'409',
-        'language.in'=>'400'
+      'logo.image'=>$this->errorMessage[400][$request->language],
+        'email.email'=>$this->errorMessage[400][$request->language],
+        'email.unique'=>$this->errorMessage[409][$request->language],
+        'language.in'=>$this->errorMessage[400][$request->language]
     ];
         try{
             $Employee=Employee::where('apiToken',$request->apiToken)->first();
             $rules['email']='email|unique:employee,email,'.$Employee->id;
             $validator = Validator::make($request->all(), $rules, $messages);
             if($validator->fails()) {
-                return response()->json(['status'=>(int)$validator->errors()->first()]);
+                return response()->json(['message'=>$validator->errors()->first()]);
             }
     #Start logic
 
@@ -113,10 +112,10 @@ public function update(Request $request){
     $request->logo == NULL ? :$this->SaveFile($Employee,'logo','logo','images');
     $Employee->save();
 
-    return response()->json(['status'=>200,'employee'=>new employeeResource($employee)]);
+    return response()->json(['message'=>$this->errorMessage[200][$request->language],'employee'=>new employeeResource($employee)]);
     #end logic
             }catch(Exception $e) {
-               return response()->json(['status' =>404]);
+               return response()->json(['message' =>$this->errorMessage[404][$request->language]]);
              }
         }// end funcrion    
 
@@ -135,151 +134,32 @@ public function update(Request $request){
         ];
         
         $messages=[
-            'email.required'=>'400',
-            'email.email'=>'400',
-            'email.exists'=>'415',
-            'password.required'=>'400',
-            'password.min'=>'400',
+            'email.required'=>$this->errorMessage[400]['en'],
+            'email.email'=>$this->errorMessage[400]['en'],
+            'email.exists'=>$this->errorMessage[415]['en'],
+            'password.required'=>$this->errorMessage[400]['en'],
+            'password.min'=>$this->errorMessage[400]['en'],
         ];
             try{
                 $validator = Validator::make($request->all(), $rules, $messages);
                 if($validator->fails()) {
-                    return response()->json(['status'=>(int)$validator->errors()->first()]);
+                    return response()->json(['message'=>$validator->errors()->first()]);
                 }
         #Start logic
         #password check
     
         $employee=Employee::where('email',$request->email)->first();
         if(!Hash::check($request->password,$employee->password)){
-            return response()->json(['status'=>410]);
+            return response()->json(['message'=>$this->errorMessage[410]['en']]);
         }
         #login Okay 
-        return response()->json(['status'=>200,'employee'=>new employeeResource($employee)]);
+        return response()->json(['message'=>$this->errorMessage[200]['en'],'employee'=>new employeeResource($employee)]);
         #end logic
                 }catch(Exception $e) {
-                   return response()->json(['status' =>404]);
+                   return response()->json(['message' =>$this->errorMessage[400]['en']]);
                  }
             }// end funcrion    
     
     
-    /**  
-    * This api will be used to forget Password employee.  
-    * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-    * @param $request Illuminate\Http\Request;
-    * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
-    */
-    public function forgetPassword(Request $request){
-        $rules=[
-            'email'=>'required|email|exists:employee,email',
-        ];
-        
-        $messages=[
-            'email.required'=>'400',
-            'email.email'=>'400',
-            'email.exists'=>'412',
-    
-        ];
-            try{
-                $validator = Validator::make($request->all(), $rules, $messages);
-                if($validator->fails()) {
-                    return response()->json(['status'=>(int)$validator->errors()->first()]);
-                }
-        #Start logic
-        $employee=Employee::where('email',$request->email)->first();
-        $code="123456";
-        $employee->code=$code;
-        $employee->save();
-    
-        #send Email
-        $this->sendEmail('email.sendEmail',$request->email,['code'=>$code],'Alhin ');       
-    
-        return response()->json(['status'=>200]);
-        #end logic
-                }catch(Exception $e) {
-                   return response()->json(['status' =>404]);
-                 }
-            }// end funcrion    
-    
-    /**  
-    * This api will be used in 1 cases to validate the employee verification code. 
-    * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-    * @param $request Illuminate\Http\Request;
-    * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
-    */
-    public function validateCode(Request $request){
-
-        $rules=[
-            'email'=>'required|email|exists:employee,email',
-            'code'=>'required|exists:employee,code',
-        ];
-        
-        $messages=[
-            'email.required'=>'400',
-            'email.email'=>'400',
-            'email.exists'=>'412',
-            'code.required'=>'400',
-            'code.exists'=>'408',
-        ];
-            try{
-                $validator = Validator::make($request->all(), $rules, $messages);
-                if($validator->fails()) {
-                    return response()->json(['status'=>(int)$validator->errors()->first()]);
-                }
-        #Start logic
-        $employee=Employee::where('email',$request->email)->first();
-        #check if code is right
-       
-        if($request->code !== $employee->code){
-            return response()->json(['status'=>408]);
-        }
-
-        $employee->code=NULL;
-        $employee->tmpApiToken=\Str::random(64);
-        $employee->save();
-    
-        return response()->json(['status'=>200,'tmpApiToken'=>$employee->tmpApiToken]);
-        #end logic
-                }catch(Exception $e) {
-                   return response()->json(['status' =>404]);
-                 }
-            }// end funcrion  
-            
-    /**  
-    * This api will be used to change the password of the employee if his account is exists.
-    * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-    * @param $request Illuminate\Http\Request;
-    * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
-    */
-    public function changePassword(Request $request){
-        $rules=[
-            'tmpToken'=>'required|exists:employee,tmpApiToken',
-            'newPassword'=>'required|min:6',
-        ];
-        
-        $messages=[
-            'tmpToken.required'=>'400',
-            'tmpToken.exists'=>'400',
-            'newPassword.required'=>'400',
-            'newPassword.min'=>'400',
-        ];
-            try{
-                $validator = Validator::make($request->all(), $rules, $messages);
-                if($validator->fails()) {
-                    return response()->json(['status'=>(int)$validator->errors()->first()]);
-                }
-        #Start logic
-        $employee=Employee::where('tmpApiToken',$request->tmpToken)->first();
-        #check if code is right
-    
-        $employee->code=NULL;
-        $employee->tmpApiToken=NULL;
-        $employee->password=Hash::make($request->newPassword);
-        $employee->save();
-    
-        return response()->json(['status'=>200]);
-        #end logic
-                }catch(Exception $e) {
-                   return response()->json(['status' =>404]);
-                 }
-            }// end funcrion        
+ 
 }

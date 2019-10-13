@@ -16,7 +16,8 @@ class JobInfo extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'job_title'=>$request->language =='ar' ? $this->job_title_ar :$this->job_title_en,
+            'job_title'=>$this->job_title,
+            'companyName'=>$this->companyName,
             'image'=>$this->image,
             'phone'=>$this->phone,
             'email'=>$this->email,
@@ -29,8 +30,8 @@ class JobInfo extends JsonResource
                 'logo'=>isset($this->company->logo)== NULL ? NULL :$this->company->logo,
                 'language'=>$this->company->language,
             ],
-            'rate'=>$this->rate->count() == NULL ? '0': $this->rate->sum('rate')/$this->rate->count(),
-            'isFav'=>$this->isfav,
+            'rate'=>$this->rate->count() == NULL ? 0: $this->rate->sum('rate')/$this->rate->count(),
+            'isFav'=>new isFavJob($request,$this->id),
             'review'=>$this->view,
             "salary"=>$this->salary
         ];

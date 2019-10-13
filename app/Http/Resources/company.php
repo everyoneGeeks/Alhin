@@ -20,7 +20,8 @@ class company extends JsonResource
             'email'=>$this->email,
             'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
             'language'=>$this->language,
-            'jobs'=>Job::collection($this->whenLoaded('jobs'))
+            'jobs'=>new Job($this->jobs),
+            'is_employee'=>0
         ];
     }
 }

@@ -16,12 +16,14 @@ class Jobs extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'job_title'=>$request->language =='ar' ? $this->job_title_ar :$this->job_title_en,
+            'job_title'=>$this->job_title,
+            'companyName'=>$this->companyName,
             'image'=>$this->image,
-            'companyName'=>$this->company->name,
             'rate'=>$this->rate->count() == NULL ? '0': $this->rate->sum('rate')/$this->rate->count(),
-            'isFav'=>$this->isfav,
+            'isFav'=>new isFavJob($request,$this->id),
             'review'=>$this->view,
+            "salary"=>$this->salary,
+            'total_experience'=>$this->total_exprience,
         ];
     }
 }

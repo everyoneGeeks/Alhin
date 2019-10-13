@@ -39,6 +39,7 @@ class companyControllers extends Controller
  */
     public function register(Request $request)
     {
+        
         $rules = [
             'name' => 'required',
             'email' => 'required|email|unique:company,email',
@@ -47,19 +48,19 @@ class companyControllers extends Controller
         ];
 
         $messages = [
-            'name.required' => '400',
-            'email.required' => '400',
-            'email.email' => '400',
-            'email.unique' => '409',
-            'password.required' => '400',
-            'language.required' => '400',
-            'password.min' => '400',
-            'language.in' => '400',
+            'name.required' => $this->errorMessage[400][$request->language],
+            'email.required' => $this->errorMessage[400][$request->language],
+            'email.email' =>$this->errorMessage[400][$request->language],
+            'email.unique' => $this->errorMessage[409][$request->language],
+            'password.required' => $this->errorMessage[400][$request->language],
+            'language.required' => $this->errorMessage[400][$request->language],
+            'password.min' => $this->errorMessage[400][$request->language],
+            'language.in' => $this->errorMessage[400][$request->language],
         ];
         try {
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' => $validator->errors()->first()]);
             }
             #Start logic
             $company = new Company;
@@ -69,10 +70,10 @@ class companyControllers extends Controller
             $company->password = Hash::make($request->password);
             $company->language = $request->language;
             $company->save();
-            return response()->json(['status' => 200, 'company' => new companyResource($company)]);
+            return response()->json(['message' => $this->errorMessage[200][$request->language], 'company' => new companyResource($company)]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' =>  $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion
 
@@ -84,6 +85,7 @@ class companyControllers extends Controller
  */
     public function update(Request $request)
     {
+        $company = Company::where('apiToken', $request->apiToken)->first();
         $rules = [
             'apiToken' => 'required|exists:company,apiToken',
             'logo' => 'image',
@@ -92,17 +94,17 @@ class companyControllers extends Controller
         ];
 
         $messages = [
-            'logo.image' => '400',
-            'email.email' => '400',
-            'email.unique' => '409',
-            'language.in' => '400',
+            'logo.image' => $this->errorMessage[400][$company->language],
+            'email.email' => $this->errorMessage[400][$company->language],
+            'email.unique' => $this->errorMessage[409][$company->language],
+            'language.in' => $this->errorMessage[400][$company->language],
         ];
         try {
-            $company = Company::where('apiToken', $request->apiToken)->first();
+
             $rules['email'] = 'email|unique:company,email,' . $company->id;
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' => $validator->errors()->first()]);
             }
             #Start logic
 
@@ -113,10 +115,10 @@ class companyControllers extends Controller
             $request->logo == null ?: $this->SaveFile($company, 'logo', 'logo', 'images');
             $company->save();
 
-            return response()->json(['status' => 200, 'company' => new companyResource($company)]);
+            return response()->json(['message' => $this->errorMessage[200][$company->language], 'company' => new companyResource($company)]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404][$company->language]]);
         }
     } // end funcrion
 
@@ -135,15 +137,15 @@ class companyControllers extends Controller
         ];
 
         $messages = [
-            'email.required' => '400',
-            'email.email' => '400',
-            'password.required' => '400',
-            'password.min' => '400',
+            'email.required' => $this->errorMessage[400]['en'],
+            'email.email' => $this->errorMessage[400]['en'],
+            'password.required' => $this->errorMessage[400]['en'],
+            'password.min' => $this->errorMessage[400]['en'],
         ];
         try {
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' =>  $validator->errors()->first()]);
             }
             #Start logic
 
@@ -154,28 +156,28 @@ class companyControllers extends Controller
             if (!$company == null) {
                 #password check
                 if (!Hash::check($request->password, $company->password)) {
-                    return response()->json(['status' => 410]);
+                    return response()->json(['message' => $this->errorMessage[410]['en']]);
                 }
                 #login Okay
-                return response()->json(['status' => 200, 'user' => new companyResource($company)]);
+                return response()->json(['message' => $this->errorMessage[200]['en'], 'user' => new companyResource($company)]);
             }
 
             #Eployee
             if (!$Employee == null) {
                 #password check
                 if (!Hash::check($request->password, $Employee->password)) {
-                    return response()->json(['status' => 410]);
+                    return response()->json(['message' => $this->errorMessage[410]['en']]);
                 }
                 #login Okay
-                return response()->json(['status' => 200, 'user' => new employeeResource($Employee)]);
+                return response()->json(['message' => $this->errorMessage[200]['en'], 'user' => new employeeResource($Employee)]);
 
             }
 
-            return response()->json(['status' => 415]);
+            return response()->json(['message' => $this->errorMessage[415]['en']]);
 
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404]['en']]);
         }
     } // end funcrion
 
@@ -199,7 +201,7 @@ class companyControllers extends Controller
         try {
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' => $validator->errors()->first()]);
             }
             #Start logic
 
@@ -214,7 +216,7 @@ class companyControllers extends Controller
                 $company->save();
                 #send Email
                 $this->sendEmail('email.sendEmail', $request->email, ['code' => $code], 'Alhin ');
-                return response()->json(['status' => 200]);
+                return response()->json(['message' => $this->errorMessage[200][$company->language]]);
             }
 
             if (!$Employee == null) {
@@ -224,13 +226,13 @@ class companyControllers extends Controller
                 $Employee->save();
                 #send Email
                 $this->sendEmail('email.sendEmail', $request->email, ['code' => $code], 'Alhin ');
-                return response()->json(['status' => 200]);
+                return response()->json(['message' => $this->errorMessage[200][$Employee->language]]);
             }
 
-            return response()->json(['status' => 412]);
+            return response()->json(['message' => $this->errorMessage[412]['en']]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404]['en']]);
         }
     } // end funcrion
 
@@ -248,14 +250,14 @@ class companyControllers extends Controller
         ];
 
         $messages = [
-            'email.required' => '400',
-            'email.email' => '405',
-            'code.required' => '405',
+            'email.required' => $this->errorMessage[400]['en'],
+            'email.email' => $this->errorMessage[405]['en'],
+            'code.required' => $this->errorMessage[405]['en'],
         ];
         try {
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' => $validator->errors()->first()]);
             }
             #Start logic
 
@@ -267,26 +269,26 @@ class companyControllers extends Controller
                 $company->code = null;
                 $company->tmpApiToken = \Str::random(64);
                 $company->save();
-                return response()->json(['status' => 200, 'tmpApiToken' => $company->tmpApiToken]);
+                return response()->json(['message' => $this->errorMessage[200]['en'], 'tmpApiToken' => $company->tmpApiToken]);
             }
 
             if (!$Employee == null) {
                 $Employee->code = null;
                 $Employee->tmpApiToken = \Str::random(64);
                 $Employee->save();
-                return response()->json(['status' => 200, 'tmpApiToken' => $Employee->tmpApiToken]);
+                return response()->json(['message' => $this->errorMessage[200]['en'], 'tmpApiToken' => $Employee->tmpApiToken]);
             }
 
 
 
-            return response()->json(['status' => 408]);
+            return response()->json(['message' => $this->errorMessage[408]['en']]);
             
 
 
        
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404]['en']]);
         }
     } // end funcrion
 
@@ -311,7 +313,7 @@ class companyControllers extends Controller
         try {
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' =>  $validator->errors()->first()]);
             }
             #Start logic
             $company = Company::where('tmpApiToken', $request->tmpToken)->first();
@@ -323,7 +325,7 @@ class companyControllers extends Controller
                 $company->tmpApiToken = null;
                 $company->password = Hash::make($request->newPassword);
                 $company->save();
-                return response()->json(['status' => 200]);
+                return response()->json(['message' => $this->errorMessage[200]['en']]);
             }
 
             if (!$Employee == null) {
@@ -331,13 +333,13 @@ class companyControllers extends Controller
                 $Employee->tmpApiToken = null;
                 $Employee->password = Hash::make($request->newPassword);
                 $Employee->save();
-                return response()->json(['status' => 200]);
+                return response()->json(['message' => $this->errorMessage[200]['en']]);
             }
 
-            return response()->json(['status' => 405]);
+            return response()->json(['message' => $this->errorMessage[405]['en']]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404]['en']]);
         }
     } // end funcrion
 

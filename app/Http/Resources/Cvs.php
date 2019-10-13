@@ -19,8 +19,10 @@ class Cvs extends JsonResource
             'job_title'=>$this->job_title,
             'employeeName'=>$this->employee->name,
             'photo'=>$this->photo,
-            'rate'=>$this->rate->count() == NULL ? '0': $this->rate->sum('rate')/$this->rate->count(),
-            'isFav'=>$this->isfav,
+            'rate'=>$this->rate->count() == NULL ? 0: $this->rate->sum('rate')/$this->rate->count(),
+            "expectedSalary"=>$this->expected_salary,
+            'total_experience'=>$this->total_experience,
+            'isFav'=>new isFavCv($request,$this->id),
             'review'=>$this->view,
         ];
     }

@@ -14,16 +14,16 @@ class favObject extends JsonResource
      */
     public function toArray($request)
     {
-        $date=1;
+
         return [
             'id'=>$this->id,
-            'name'=>$this->name,
-            'email'=>$this->email,
-            'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
-            'language'=>$this->language,
-            'cv'=>$this->cv ==NULL ? $date=0:new CvInfo($this->whenLoaded('cv')) ,
-            'job'=>new JobInfo($this->job),
-            'is_cv'=>$date
+            'name'=>$this->company->name,
+            'email'=>$this->company->email,
+            'logo'=>isset($this->company->logo)== NULL ? NULL :$this->company->logo,
+            'language'=>$this->company->language,
+            'cv'=>new CvInfo($this->whenLoaded('cv')) ,
+            'job'=>new JobInfo($this->whenLoaded('job')) ,
+            'is_cv'=>$this->whenLoaded('cv')== NULL ? 0 :1,
         ];
     }
 }

@@ -39,6 +39,13 @@ Route::post('/update/employee',"Api\EmployeeControllers@update");
 #-----------------------------------------
 Route::post('/ads',"Api\AdsControllers@getAds");
 
+
+#------------------------------------------
+#rate
+#-----------------------------------------
+Route::post('/rate',"Api\SelectObjects@rate");
+
+
 #------------------------------------------
 #residenceCountry,religion,nationality
 #-----------------------------------------

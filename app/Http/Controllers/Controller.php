@@ -74,5 +74,60 @@ public function SaveFile($object_table,$cloName,$fileName,$path){
 	  $result = curl_exec ( $Curl );
 	  curl_close ( $Curl );
   }
+
+  
+
+  public $errorMessage=[
+	'400'=>[
+		'en'=>'The request failed because it’s a bad request the required parameters didn’t send.',
+		'ar'=>'أخفق الطلب نظرًا لأنه طلب سيئ لم يتم إرسال المعلمات المطلوبة'
+	],
+	'405'=>[
+		'en'=>'The request failed because the parameters violate the validation rules (Wrong type, Constraint Failed).',
+		'ar'=>' فشل الطلب لأن المعلمات تنتهك قواعد التحقق من الصحة (نوع خاطئ ، فشل القيد).'
+	],
+	'409'=>[
+		'en'=>'email is already stored with another account.',
+		'ar'=>'البريد الإلكتروني بالفعل مع حساب آخر.'
+	],
+	'415'=>[
+			'en'=>'email not register.',
+			'ar'=>'هذا البريد الالكتروني غير مسجل '
+	],
+	'410'=>[
+		'en'=>' Password is not correct.',
+		'ar'=>'كلمة المرور غير صحيحة.'
+	],
+	'412'=>[
+		'en'=>'there is no account with this email.',
+		'ar'=>'لايوجد حساب مسجل بهذا البريد الالكتروني '
+	],
+	'408'=>[
+		'en'=>' the code is not correct.',
+		'ar'=>'الكود غير صحيح'
+	],
+	'420'=>[
+		'en'=>'applyed',
+		'ar'=>'تم الاضافة'
+	],
+	'204'=>[
+		'en'=>' the response is empty.',
+		'ar'=>'لايوجد بيانات '
+	],
+	'200'=>[
+	 'en'=>'done'
+	,'ar'=>'تم '
+	],
+	'404'=>[
+		'en'=>'The request failed because of resource is not found or another unknown problem.
+		',
+		'ar'=>'خطاء غير معروف'
+	],
 	
+		'430'=>[
+		'en'=>'this user have cv ',
+		'ar'=>' المستخدم لدية cv '
+	]
+
+];  
 }

@@ -48,28 +48,7 @@ class CVControllers extends Controller
 
     ];
 
-    public $messages = [
-        'apiToken.required' => '400',
-        'apiToken.exists' => '405',
-        'phone.required' => '400',
-        'phone.unique' => '405',
-        'date_of_birth.required' => '400',
-        'date_of_birth.date_format' => '405',
-        'martial_status.required' => '400',
-        'martial_status.in' => '405',
-        'residence_country_id.required' => '400',
-        'residence_country_id.exists' => '405',
-        'religion_id.required' => '400',
-        'religion_id.exists' => '405',
-        'nationality_id.required' => '400',
-        'nationality_id.exists' => '405',
-        'total_experience.required' => '400',
-        'job_title.required' => '400',
-        'photo.required' => '400',
-        'work_experience.*.job_title.required' => '400',
-        'work_experience.*.company_name.required' => '400',
-        'work_experience.*.experirnce_years.required' => '400',
-    ];
+
     /**
      * This api will to add new cv to employee
      * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -78,11 +57,34 @@ class CVControllers extends Controller
      */
     public function add(Request $request)
     {
+     $messages = [
 
+            'apiToken.required' => $this->errorMessage[400]['en'],
+            'apiToken.exists' => $this->errorMessage[405]['en'],
+            
+            'phone.required' => $this->errorMessage[400]['en'],
+            'phone.unique' => $this->errorMessage[405]['en'],
+            'date_of_birth.required' => $this->errorMessage[400]['en'],
+            'date_of_birth.date_format' => $this->errorMessage[405]['en'],
+            'martial_status.required' => $this->errorMessage[400]['en'],
+            'martial_status.in' => $this->errorMessage[405]['en'],
+            'residence_country_id.required' => $this->errorMessage[400]['en'],
+            'residence_country_id.exists' =>  $this->errorMessage[405]['en'],
+            'religion_id.required' =>  $this->errorMessage[400]['en'],
+            'religion_id.exists' => $this->errorMessage[405]['en'],
+            'nationality_id.required' => $this->errorMessage[400]['en'],
+            'nationality_id.exists' =>  $this->errorMessage[405]['en'],
+            'total_experience.required' => $this->errorMessage[400]['en'],
+            'job_title.required' =>  $this->errorMessage[400]['en'],
+            'photo.required' =>  $this->errorMessage[400]['en'],
+            'work_experience.*.job_title.required' =>  $this->errorMessage[400]['en'],
+            'work_experience.*.company_name.required' =>  $this->errorMessage[400]['en'],
+            'work_experience.*.experirnce_years.required' =>  $this->errorMessage[400]['en'],
+        ];
         try {
-            $validator = \Validator::make($request->all(), $this->rules, $this->messages);
+            $validator = \Validator::make($request->all(), $this->rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' =>  $validator->errors()->first()]);
             }
             #Start logic
             #check employee
@@ -91,7 +93,7 @@ class CVControllers extends Controller
 
             $USER = CV::where('employee_id', $employee->id)->first();
             if ($USER !== null) {
-                return response()->json(['status' => 410]);
+                return response()->json(['message' =>  $this->errorMessage[430][$employee->language]]);
             }
 
             $cv = new CV;
@@ -113,10 +115,10 @@ class CVControllers extends Controller
             $cv->created_at = \Carbon\Carbon::now();
             $cv->save();
 
-            return response()->json(['status' => 200]);
+            return response()->json(['message' => $this->errorMessage[200][$employee->language]]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404][$employee->language]]);
         }
     } // end funcrion
 
@@ -128,6 +130,30 @@ class CVControllers extends Controller
      */
     public function update(Request $request)
     {
+     $messages = [
+
+            'apiToken.required' => $this->errorMessage[400]['en'],
+    
+            'apiToken.exists' => $this->errorMessage[405]['en'],
+            'phone.required' => $this->errorMessage[400]['en'],
+            'phone.unique' => $this->errorMessage[405]['en'],
+            'date_of_birth.required' => $this->errorMessage[400]['en'],
+            'date_of_birth.date_format' => $this->errorMessage[405]['en'],
+            'martial_status.required' => $this->errorMessage[400]['en'],
+            'martial_status.in' => $this->errorMessage[405]['en'],
+            'residence_country_id.required' => $this->errorMessage[400]['en'],
+            'residence_country_id.exists' =>  $this->errorMessage[405]['en'],
+            'religion_id.required' =>  $this->errorMessage[400]['en'],
+            'religion_id.exists' => $this->errorMessage[405]['en'],
+            'nationality_id.required' => $this->errorMessage[400]['en'],
+            'nationality_id.exists' =>  $this->errorMessage[405]['en'],
+            'total_experience.required' => $this->errorMessage[400]['en'],
+            'job_title.required' =>  $this->errorMessage[400]['en'],
+            'photo.required' =>  $this->errorMessage[400]['en'],
+            'work_experience.*.job_title.required' =>  $this->errorMessage[400]['en'],
+            'work_experience.*.company_name.required' =>  $this->errorMessage[400]['en'],
+            'work_experience.*.experirnce_years.required' =>  $this->errorMessage[400]['en'],
+        ];
         #check employee
         $employee = Employee::where('apiToken', $request->apiToken)->first();
 
@@ -150,9 +176,9 @@ class CVControllers extends Controller
         $this->rules['work_experience.*.experirnce_years'] = 'nullable';
         try {
 
-            $validator = \Validator::make($request->all(), $this->rules, $this->messages);
+            $validator = \Validator::make($request->all(), $this->rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' =>  $validator->errors()->first()]);
             }
 
             #Start logic
@@ -160,7 +186,7 @@ class CVControllers extends Controller
             $cv = CV::where('employee_id',$employee->id)->first();
           
             if($cv == NULL){
-               return response()->json(['status'=>405]);
+               return response()->json(['message'=>$this->errorMessage[405][$employee->language]]);
            }
             $request->phone == NULL ?: $cv->phone = $request->phone;
             $request->expectedSalary ==NULL ? :$cv->expected_salary=$request->expectedSalary ;
@@ -177,10 +203,10 @@ class CVControllers extends Controller
             $cv->created_at = \Carbon\Carbon::now();
             $cv->save();
 
-            return response()->json(['status' => 200]);
+            return response()->json(['message' => $this->errorMessage[200][$employee->language]]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404][$employee->language]]);
         }
     } // end funcrion
 
@@ -197,13 +223,13 @@ class CVControllers extends Controller
         ];
 
         $messages = [
-            'apiToken.required' => '400',
-            'apiToken.exists' => '405',
+            'apiToken.required' =>$this->errorMessage[400]['en'] ,
+            'apiToken.exists' => $this->errorMessage[405]['en'],
         ];
         try {
             $validator = \Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' =>  $validator->errors()->first()]);
             }
             #Start logic
             #check employee
@@ -212,14 +238,14 @@ class CVControllers extends Controller
             $cv = CV::where('employee_id', $employee->id)->first();
 
             if ($cv == null) {
-                return response()->json(['status' => 204]);
+                return response()->json(['message' => $this->errorMessage[204][$request->language]]);
             }
 
 
-            return response()->json(['status' => 200, 'cv' => new ResourcesCv($cv)]);
+            return response()->json(['message' => $this->errorMessage[200][$request->language], 'cv' => new ResourcesCv($cv)]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion
 
@@ -239,14 +265,14 @@ class CVControllers extends Controller
         ];
 
         $messages = [
-            'residence_country_id.required' => '400',
-            'martial_status.in' => '405',
-            'most_resent.in' => '405',
+            'residence_country_id.required' => $this->errorMessage[400]['en'],
+            'martial_status.in' => $this->errorMessage[405]['en'],
+            'most_resent.in' =>$this->errorMessage[405]['en'],
         ];
         try {
             $validator = \Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' => $validator->errors()->first()]);
             }
             #Start logic
             #search when you send (martial_status,residence_country_id,total_experience,job_title)
@@ -271,13 +297,13 @@ class CVControllers extends Controller
 
 
             if ($cv->isEmpty()) {
-                return response()->json(['status' => 204]);
+                return response()->json(['message' => $this->errorMessage[204]['en']]);
             }
 
-            return response()->json(['status' => 200, 'cv' =>  ResourcesCvs::collection($cv)]);
+            return response()->json(['message' => $this->errorMessage[200]['en'], 'cv' =>  ResourcesCvs::collection($cv)]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404]['en']]);
         }
     } // end funcrion
 
@@ -300,15 +326,15 @@ class CVControllers extends Controller
         ];
 
         $messages = [
-            'cvId.required' => '400',
-            'cvId.exists' => '405',
-            'language.required' => '400',
-            'language.id' => '405',
+            'cvId.required' => $this->errorMessage[400][$request->language],
+            'cvId.exists' => $this->errorMessage[405][$request->language],
+            'language.required' =>$this->errorMessage[400][$request->language],
+            'language.in' =>$this->errorMessage[405][$request->language],
         ];
         try {
             $validator = \Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return response()->json(['status' => (int) $validator->errors()->first()]);
+                return response()->json(['message' => $validator->errors()->first()]);
             }
             #Start logic
             #check employee
@@ -318,14 +344,14 @@ class CVControllers extends Controller
             $cv = CV::where('id', $request->cvId)->first();
 
             if ($cv == null) {
-                return response()->json(['status' => 204]);
+                return response()->json(['message' => $this->errorMessage[204][$request->language]]);
             }
 
 
-            return response()->json(['status' => 200, 'cv' => new ResourcesCv($cv)]);
+            return response()->json(['message' => $this->errorMessage[200][$request->language], 'cv' => new ResourcesCv($cv)]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['status' => 404]);
+            return response()->json(['message' => $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion
 

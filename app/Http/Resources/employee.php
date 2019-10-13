@@ -20,7 +20,8 @@ class employee extends JsonResource
             'email'=>$this->email,
             'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
             'language'=>$this->language,
-            'cv'=>new CvInfo($this->cv)
+            'cv'=>new CvInfo($this->cv),
+            'is_employee'=>1
         ];
     }
 }

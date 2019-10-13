@@ -28,6 +28,7 @@ use App\Employee;
  */
 class AppleyControllers extends Controller
 {
+   
 /**  
 *This api will to appley   employee To job
 * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -40,28 +41,33 @@ public function appley(Request $request){
         'jobId'    =>'required|exists:job,id',
     ];
 
-
+    $message=[
+        "apiToken.required"=>$this->errorMessage[400]['en'],
+        "apiToken.exists"=>$this->errorMessage[405]['en'],
+        "jobId.required"=>$this->errorMessage[400]['en'],
+        "jobId.exists"=>$this->errorMessage[405]['en'],
+    ];
         try{
             $validator = \Validator::make($request->all(), $rules);
             if($validator->fails()) {
-                return response()->json(['status'=>(int)$validator->errors()->first()]);
+                return response()->json(['message'=>$validator->errors()->first()]);
             }
     #Start logic
     $employee = Employee::where('apiToken', $request->apiToken)->first();
     #check if employee is Register 
     $check=Appley::where('employee_id',$employee->id)->where('job_id',$request->jobId)->first();
     if($check){
-        return response()->json(['status'=>409]);
+        return response()->json(['message'=>$this->errorMessage[409][$employee->language]]);
     }
     $Appley=new Appley;
     $Appley->employee_id=$employee->id;
     $Appley->job_id=$request->jobId;
     $Appley->save();
 
-    return response()->json(['status'=>200]);
+    return response()->json(['message'=>$this->errorMessage[200][$employee->language]]);
     #end logic
             }catch(Exception $e) {
-               return response()->json(['status' =>404]);
+               return response()->json(['message' =>$this->errorMessage[404][$employee->language]]);
              }
         }// end funcrion
 
@@ -79,13 +85,13 @@ public function getAppley(Request $request){
     ];
 
     $messages = [
-        'apiToken.required' => '400',
-        'apiToken.exists' => '405',
+        'apiToken.required' => $this->errorMessage[400]['en'],
+        'apiToken.exists' =>$this->errorMessage[405]['en'],
     ];
         try{
             $validator = \Validator::make($request->all(), $rules, $messages);
             if($validator->fails()) {
-                return response()->json(['status'=>(int)$validator->errors()->first()]);
+                return response()->json(['message'=>$validator->errors()->first()]);
             }
     #Start logic
     $employee = Employee::where('apiToken', $request->apiToken)->first();
@@ -94,15 +100,15 @@ public function getAppley(Request $request){
     $jobs=Appley::where('employee_id',$employee->id)->get();
 
     if($jobs->isEmpty()){
-        return response()->json(['status'=>204]);
+        return response()->json(['message'=>$this->errorMessage[204][$employee->language]]);
     }
 
 
 
-    return response()->json(['status'=>200,'appley'=>ResourceAppley::collection($jobs)]);
+    return response()->json(['message'=>$this->errorMessage[200][$employee->language],'appley'=>ResourceAppley::collection($jobs)]);
     #end logic
             }catch(Exception $e) {
-               return response()->json(['status' =>404]);
+               return response()->json(['message' =>$this->errorMessage[404][$employee->language]]);
              }
         }// end funcrion        
 
@@ -123,15 +129,15 @@ public function unAppley(Request $request){
     ];
 
     $messages = [
-        'apiToken.required' => '400',
-        'apiToken.exists' => '405',
-        'appley_id.required' => '400',
-        'appley_id.exists' => '405',
+        'apiToken.required' => $this->errorMessage[400]['en'],
+        'apiToken.exists' => $this->errorMessage[405]['en'],
+        'appley_id.required' =>$this->errorMessage[400]['en'],
+        'appley_id.exists' =>$this->errorMessage[405]['en'],
     ];
         try{
             $validator = \Validator::make($request->all(), $rules, $messages);
             if($validator->fails()) {
-                return response()->json(['status'=>(int)$validator->errors()->first()]);
+                return response()->json(['message'=>$validator->errors()->first()]);
             }
             #Start logic
             $employee = Employee::where('apiToken', $request->apiToken)->first();
@@ -142,10 +148,10 @@ public function unAppley(Request $request){
 
 
 
-    return response()->json(['status'=>200]);
+    return response()->json(['message'=>$this->errorMessage[200]['en']]);
     #end logic
             }catch(Exception $e) {
-               return response()->json(['status' =>404]);
+               return response()->json(['message' =>$this->errorMessage[404]['en']]);
              }
         }// end funcrion                
 }

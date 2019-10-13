@@ -20,12 +20,12 @@ class AdsControllers extends Controller
         #Start logic    
         $Ads=Ads::get();
               if($Ads == NULL){
-                return response()->json(['status'=>204]);
+                return response()->json(['message'=>$this->errorMessage[204]['en']]);
               }
-        return response()->json(['status'=>200,'ads'=>adsResource::collection($Ads)]);
+        return response()->json(['message'=>$this->errorMessage[200]['en'],'ads'=>adsResource::collection($Ads)]);
         #end logic
                 }catch(Exception $e) {
-                   return response()->json(['status' =>404]);
+                   return response()->json(['message'=>$this->errorMessage[404]['en']]);
                  }
             }// end funcrion    
 }
