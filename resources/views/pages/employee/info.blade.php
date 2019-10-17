@@ -71,19 +71,29 @@
                   <li class="list-group-item">
                   <span>{{ $Employee->cv->date_of_birth}}</span> <b class="float-right"> تاريخ الميلاد </b>
                   </li>
-                  @if($Employee->cv->martial_status == 1)
+                  @if($Employee->cv->martial_status == "Single")
                   <li class="list-group-item">
-                      <span>ادي  الخدمة العسكرية </span> <b class="float-right"> الخدمة العسكرية  </b>
+                      <span>   اعزب </span> <b class="float-right">  الحاله الاجتماعية   </b>
                       </li>   
-                  @else  
+                  @elseif($Employee->cv->martial_status == "Widowed")   
                   <li class="list-group-item">
-                      <span>لم يلتحق  بي الخدمة العسكرية </span> <b class="float-right"> الخدمة العسكرية  </b>
-                      </li>  
+                    <span>   ارمل </span> <b class="float-right">  الحاله الاجتماعية   </b>
+                    </li> 
+                  @else
+                  <li class="list-group-item">
+                    <span>   متزوج </span> <b class="float-right">  الحاله الاجتماعية   </b>
+                    </li> 
                   @endif
+
+                  <li class="list-group-item">
+                    <span>{{ $Employee->cv->expected_salary}}</span> <b class="float-right"> الراتب المتوقع </b>
+                  </li>   
                   <li class="list-group-item">
                       <span>{{ $Employee->cv->residence_country->country_ar}}</span> <b class="float-right"> المدينة </b>
-                    </li>                  
-               
+                    </li>   
+                    
+
+                    
                     <li class="list-group-item">
                         <span>{{ $Employee->cv->religion->religion_ar}}</span> <b class="float-right"> الديانة </b>
                       </li>  
@@ -100,11 +110,12 @@
                               <span>{{ $Employee->cv->note}}</span> <b class="float-right">  الملاحظات </b>
                             </li> 
                             
-                            
                             <li class="list-group-item">
-                                <span>
-                                  <a href="/{{ $Employee->cv->cv}}"> تحميل </a></span> <b class="float-right"> ملف السيرة الذاتية  </b>
-                              </li>  
+                              <span>{{ $Employee->cv->view}}</span> <b class="float-right">  عدد المشاهدات  </b>
+                            </li>    
+                              
+
+
                               
                                 <li class="list-group-item">
                                     <span>{{Carbon\Carbon::parse($Employee->created_at)->diffForHumans()}}</span> <b class="float-right">  تاريخ انشاء السيرة الذاتية    </b>
@@ -125,12 +136,12 @@
 
       
       @component('components.panel',['subTitle'=>' الاعمال السابقة'])
-      @if(json_decode($Employee->cv->work_experience) == NULL)
+      @if($Employee->cv->work_experience_job_title == NULL)
       
       @component('components.empty',['section'=>'الاعمال  السابقة']) @endcomponent
       
       @else 
-      
+
       <table id="example2" class="table table-bordered table-hover">
               <thead>
               <tr>
@@ -140,14 +151,13 @@
               </tr>
               </thead>
               <tbody>  
-      @foreach(json_decode($Employee->cv->work_experience) as $work)
+
               <tr>
-      <th> {{$work->job_title}} </th>
-      <th> {{$work->company_name}} </th>
-      <th> {{$work->experirnce_years}} </th>
+      <th> {{$Employee->cv->work_experience_job_title}} </th>
+      <th> {{$Employee->cv->work_experience_company_name}} </th>
+      <th> {{$Employee->cv->work_experience_experirnce_years}} </th>
               </tr>
       
-              @endforeach  
               </tbody>
               <tfoot>
               <tr>

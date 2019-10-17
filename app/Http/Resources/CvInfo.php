@@ -18,6 +18,8 @@ class CvInfo extends JsonResource
             'id'=>$this->id, 
             'job_title'=>$this->job_title,
             'phone'=>$this->phone,
+            'Username'=>$this->employee->name,
+            'email'=>$this->employee->email,
             'date_of_birth'=>$this->date_of_birth,
             'nationality'=>new nationality($this->nationality),
             'martial_status'=>$this->martial_status,
@@ -27,9 +29,12 @@ class CvInfo extends JsonResource
             'note'=>$this->note,
             'photo'=>$this->photo,
             "expectedSalary"=>$this->expected_salary,
-            'workExperience'=>new workExperience(json_decode($this->work_experience)),
+                 'work_experience_job_title'=>$this->work_experience_job_title,
+                'work_experience_company_name'=>$this->work_experience_company_name,
+                'work_experience_experirnce_years'=>$this->work_experience_experirnce_years,
+
             'rate'=>$this->rate->count() == NULL ? '0': $this->rate->sum('rate')/$this->rate->count(),
-            'isFav'=>new isFavCv($request,$this->id),
+            'isFav'=>true,//new isFavCv($request,$this->id),
             'review'=>$this->view,
 
         ];

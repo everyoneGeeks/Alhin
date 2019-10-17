@@ -58,8 +58,7 @@
       <table id="example2" class="table table-bordered table-hover">
               <thead>
               <tr>
-                  <th>  اسم الوظيفة بالعربي</th>
-                  <th>  اسم الوظيفة بالاجنبي</th>
+                  <th> الوظيفة </th>
                   <th> الهاتف</th>
                   <th> الايميل</th>
 
@@ -68,8 +67,7 @@
               <tbody>  
       @foreach($company->job as $job)
               <tr>
-      <th><a href="/company/job/{{ $job->id }}"> {{$job->job_title_ar}} </th>
-      <th> {{$job->job_title_en}} </th>
+      <th><a href="/company/job/{{ $job->id }}"> {{$job->jobName->name_ar}} </th>
 
       <th> {{$job->phone}} </th>
       <th> {{$job->email}} </th>
@@ -81,10 +79,9 @@
               </tbody>
               <tfoot>
               <tr>
-                  <th>  اسم الوظيفة بالعربي</th>
-                  <th>  اسم الوظيفة بالاجنبي</th>
-                  <th> الهاتف</th>
-                  <th> الايميل</th>
+                <th> الوظيفة </th>
+                <th> الهاتف</th>
+                <th> الايميل</th>
 
       
               </tr>

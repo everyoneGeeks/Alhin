@@ -14,13 +14,14 @@ class Jobs extends JsonResource
      */
     public function toArray($request)
     {
+        $lang="name_".$request->language;
         return [
             'id'=>$this->id,
-            'job_title'=>$this->job_title,
+            'job_title'=>$this->jobName->$lang,
             'companyName'=>$this->companyName,
             'image'=>$this->image,
             'rate'=>$this->rate->count() == NULL ? '0': $this->rate->sum('rate')/$this->rate->count(),
-            'isFav'=>new isFavJob($request,$this->id),
+            'isFav'=>true,//new isFavJob($request,$this->id),
             'review'=>$this->view,
             "salary"=>$this->salary,
             'total_experience'=>$this->total_exprience,

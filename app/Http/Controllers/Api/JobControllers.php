@@ -5,7 +5,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Jobs as ResourcesJobs;
 use App\Http\Resources\JobInfo as ResourcesJobInfo;
+use App\Http\Resources\JobsName as ResourcesJobsName;
+
+
 use App\Job;
+use App\JobsName;
 use App\Company;
 
 /*
@@ -29,7 +33,7 @@ class JobControllers extends Controller
 {
     public $rules = [
         'apiToken' => 'required|exists:company,apiToken',
-        'job_title' => 'required',
+        'job_title' => 'required|exists:jobs_name,id',
         'image' => 'required|image',
         'phone' => 'required',
         'email' => 'required|email',
@@ -49,18 +53,19 @@ class JobControllers extends Controller
     public function add(Request $request)
     {
          $messages = [
-            'apiToken.required' => $this->errorMessage[400]['en'],
-            'apiToken.exists' => $this->errorMessage[405]['en'],
-            'job_title.required' => $this->errorMessage[400]['en'],
-            'image.required' => $this->errorMessage[400]['en'],
-            'image.image' => $this->errorMessage[405]['en'],
-            'companyName.required'=>$this->errorMessage[400]['en'],
-            'residence_country_id.required' =>$this->errorMessage[400]['en'],
-            'residence_country_id.exists' =>$this->errorMessage[405]['en'],
-            'phone.required' => $this->errorMessage[400]['en'],
-            'email.required' => $this->errorMessage[400]['en'],
-            'email.email' => $this->errorMessage[405]['en'],
-            'total_exprience.required' =>$this->errorMessage[400]['en'] ,
+            'apiToken.required' => $this->errorMessage[400][$request->language],
+            'apiToken.exists' => $this->errorMessage[405][$request->language],
+            'job_title.exists' => $this->errorMessage[405][$request->language],
+            'job_title.required' => $this->errorMessage[400][$request->language],
+            'image.required' => $this->errorMessage[400][$request->language],
+            'image.image' => $this->errorMessage[405][$request->language],
+            'companyName.required'=>$this->errorMessage[400][$request->language],
+            'residence_country_id.required' =>$this->errorMessage[400][$request->language],
+            'residence_country_id.exists' =>$this->errorMessage[405][$request->language],
+            'phone.required' => $this->errorMessage[400][$request->language],
+            'email.required' => $this->errorMessage[400][$request->language],
+            'email.email' => $this->errorMessage[405][$request->language],
+            'total_exprience.required' =>$this->errorMessage[400][$request->language] ,
         ];
         try {
             $validator = \Validator::make($request->all(), $this->rules, $messages);
@@ -85,10 +90,10 @@ class JobControllers extends Controller
             $job->created_at = \Carbon\Carbon::now();
             $job->save();
 
-            return response()->json(['message' => $this->errorMessage[200]['en']]);
+            return response()->json(['message' => $this->errorMessage[200][$request->language]]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['message' => $this->errorMessage[404]['en']]);
+            return response()->json(['message' => $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion
 
@@ -103,18 +108,19 @@ class JobControllers extends Controller
     public function update(Request $request)
     {
      $messages = [
-            'apiToken.required' => $this->errorMessage[400]['en'],
-            'apiToken.exists' => $this->errorMessage[405]['en'],
-            'job_title.required' => $this->errorMessage[400]['en'],
-            'image.required' => $this->errorMessage[400]['en'],
-            'image.image' => $this->errorMessage[405]['en'],
-            'companyName.required'=>$this->errorMessage[400]['en'],
-            'residence_country_id.required' =>$this->errorMessage[400]['en'],
-            'residence_country_id.exists' =>$this->errorMessage[405]['en'],
-            'phone.required' => $this->errorMessage[400]['en'],
-            'email.required' => $this->errorMessage[400]['en'],
-            'email.email' => $this->errorMessage[405]['en'],
-            'total_exprience.required' =>$this->errorMessage[400]['en'] ,
+            'apiToken.required' => $this->errorMessage[400][$request->language],
+            'apiToken.exists' => $this->errorMessage[405][$request->language],
+            'job_title.exists' => $this->errorMessage[405][$request->language],
+            'job_title.required' => $this->errorMessage[400][$request->language],
+            'image.required' => $this->errorMessage[400][$request->language],
+            'image.image' => $this->errorMessage[405][$request->language],
+            'companyName.required'=>$this->errorMessage[400][$request->language],
+            'residence_country_id.required' =>$this->errorMessage[400][$request->language],
+            'residence_country_id.exists' =>$this->errorMessage[405][$request->language],
+            'phone.required' => $this->errorMessage[400][$request->language],
+            'email.required' => $this->errorMessage[400][$request->language],
+            'email.email' => $this->errorMessage[405][$request->language],
+            'total_exprience.required' =>$this->errorMessage[400][$request->language] ,
         ];
         #custom Validation to make Updat request
         $this->rules['martial_status'] = 'in:0,1';
@@ -125,8 +131,8 @@ class JobControllers extends Controller
         $this->rules['phone'] = 'nullable';
         $this->rules['email'] = 'nullable';
         $this->rules['jobId']='required|exists:job,id';
-        $this->messages['jobId.required']=$this->errorMessage[400]['en'];
-        $this->messages['jobId.exists']=$this->errorMessage[405]['en'];
+        $this->messages['jobId.required']=$this->errorMessage[400][$request->language];
+        $this->messages['jobId.exists']=$this->errorMessage[405][$request->language];
 
         try {
 
@@ -155,10 +161,10 @@ class JobControllers extends Controller
 
             $job->save();
 
-            return response()->json(['message' => $this->errorMessage[200]['en']]);
+            return response()->json(['message' => $this->errorMessage[200][$request->language]]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['message' => $this->errorMessage[404]['en']]);
+            return response()->json(['message' => $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion
 
@@ -175,8 +181,8 @@ class JobControllers extends Controller
         ];
 
         $messages = [
-            'apiToken.required' => $this->errorMessage[400]['en'],
-            'apiToken.exists' =>   $this->errorMessage[405]['en'],
+            'apiToken.required' => $this->errorMessage[400][$request->language],
+            'apiToken.exists' =>   $this->errorMessage[405][$request->language],
         ];
         try {
             $validator = \Validator::make($request->all(), $rules, $messages);
@@ -190,14 +196,14 @@ class JobControllers extends Controller
             $jobs = Job::where('company_id', $company->id)->get();
 
             if ($jobs->isEmpty()) {
-                return response()->json(['message' => $this->errorMessage[204]['en']]);
+                return response()->json(['message' => $this->errorMessage[204][$request->language]]);
             }
 
 
-            return response()->json(['message' => $this->errorMessage[200]['en'], 'jobs' => ResourcesJobs::collection($jobs)]);
+            return response()->json(['message' => $this->errorMessage[200][$request->language], 'jobs' => ResourcesJobs::collection($jobs)]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['message' => $this->errorMessage[404]['en']]);
+            return response()->json(['message' => $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion
 
@@ -216,8 +222,8 @@ class JobControllers extends Controller
         ];
 
         $messages = [
-            'residence_country_id.required' => $this->errorMessage[400]['en'],
-            'most_resent.in' => $this->errorMessage[405]['en'],
+            'residence_country_id.required' => $this->errorMessage[400][$request->language],
+            'most_resent.in' => $this->errorMessage[405][$request->language],
         ];
         try {
             $validator = \Validator::make($request->all(), $rules, $messages);
@@ -254,13 +260,13 @@ class JobControllers extends Controller
 
 
             if ($Job->isEmpty() ) {
-                return response()->json(['message' => $this->errorMessage[204]['en']]);
+                return response()->json(['message' => $this->errorMessage[204][$request->language]]);
             }
 
-            return response()->json(['message' => $this->errorMessage[200]['en'], 'Jobs' =>  ResourcesJobs::collection($Job)]);
+            return response()->json(['message' => $this->errorMessage[200][$request->language], 'Jobs' =>  ResourcesJobs::collection($Job)]);
             #end logic
         } catch (Exception $e) {
-            return response()->json(['message' => $this->errorMessage[404]['en']]);
+            return response()->json(['message' => $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion    
 
@@ -306,4 +312,48 @@ class JobControllers extends Controller
             return response()->json(['message' => $this->errorMessage[404][$request->language]]);
         }
     } // end funcrion    
+
+
+
+
+   /**
+     * This api will to get jobsName
+     * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+     * @param $request Illuminate\Http\Request;
+     * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+     */
+    public function jobsName(Request $request)
+    {
+        $rules = [
+            'language'=>'required|in:ar,en'
+        ];
+
+        $messages = [
+            'language.required' => $this->errorMessage[400][$request->language],
+            'language.id' => $this->errorMessage[405][$request->language],
+        ];
+        try {
+            $validator = \Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()->first()]);
+            }
+
+            if($request->language == 'ar'){
+            $jobsName = JobsName::select('id','name_ar as name')->get();
+        }else{
+            $jobsName = JobsName::select('id','name_en as name')->get();
+        }
+            if ($jobsName->isEmpty()) {
+                return response()->json(['message' => $this->errorMessage[204][$request->language]]);
+            }
+
+
+            return response()->json(['message' => $this->errorMessage[200][$request->language], 'jobsName' => new ResourcesJobsName($jobsName)]);
+            #end logic
+        } catch (Exception $e) {
+            return response()->json(['message' => $this->errorMessage[404][$request->language]]);
+        }
+    } // end funcrion    
+
+    
 }

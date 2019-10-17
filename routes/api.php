@@ -94,3 +94,9 @@ Route::post('/contact',"Api\SelectObjects@contact");
 Route::post('/appInfo',"Api\SelectObjects@appInfo");
 Route::post('/view',"Api\SelectObjects@view");
 Route::post('/changeLang',"Api\SelectObjects@changeLang");
+
+
+#------------------------------------------
+#jobsName  part
+#-----------------------------------------
+Route::post('/jobs/name',"Api\JobControllers@jobsName");

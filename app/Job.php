@@ -24,4 +24,9 @@ class Job extends Model
     {
         return $this->hasMany('App\jobRate','job_id');
     }
+
+    public function jobName ()
+    {
+        return $this->belongsTo('App\JobsName','job_title');
+    }
 }

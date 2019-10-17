@@ -24,13 +24,13 @@
                 <ul class="list-group list-group-unbordered mb-3 text-center">
 
                   <li class="list-group-item">
-                    <span>{{$job->job_title_ar}}</span> <b class="float-right"> الاسم الوظيفي بالعربي </b>
+                    <span>{{$job->jobName->name_ar}} </span> <b class="float-right"> الاسم الوظيفي  </b>
                   </li>
 
-               <li class="list-group-item">
-                    <span>{{$job->job_title_en}}</span> <b class="float-right"> الاسم الوظيفي بالانجليزي </b>
+                  <li class="list-group-item">
+                    <span>{{$job->companyName}}</span> <b class="float-right"> اسم الشركة    </b>
                   </li>
-
+                  
                       <li class="list-group-item">
                         <span>{{$job->phone}}</span> <b class="float-right"> الهاتف  </b>
                       </li>
@@ -46,12 +46,24 @@
                           <span>{{$job->total_exprience}}</span> <b class="float-right"> عدد سنين الخبرة  </b>
                         </li>
 
+
+                        <li class="list-group-item">
+                          <span>{{$job->salary}}</span> <b class="float-right"> الراتب    </b>
+                        </li>
+
+
+                        <li class="list-group-item">
+                          <span>{{$job->view}}</span> <b class="float-right"> عدد المشاهدات     </b>
+                        </li>
+
+
+
                         <li class="list-group-item">
                             <span>{{$job->residence_country->country_ar}}</span> <b class="float-right"> مدينة   </b>
                           </li>
 
                           <li class="list-group-item">
-                              <span><a href="/company/info/{{$job->company->id}}"> {{$job->company->name}}  </a></span> <b class="float-right"> اسم الشركة   </b>
+                              <span><a href="/company/info/{{$job->company->id}}"> {{$job->company->name}}  </a></span> <b class="float-right"> اسم الشركة  المالكة للاعلان</b>
                             </li>
 
 

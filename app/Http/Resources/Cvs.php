@@ -22,7 +22,7 @@ class Cvs extends JsonResource
             'rate'=>$this->rate->count() == NULL ? 0: $this->rate->sum('rate')/$this->rate->count(),
             "expectedSalary"=>$this->expected_salary,
             'total_experience'=>$this->total_experience,
-            'isFav'=>new isFavCv($request,$this->id),
+            'isFav'=>true,//new isFavCv($request,$this->id),
             'review'=>$this->view,
         ];
     }

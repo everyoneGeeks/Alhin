@@ -27,8 +27,8 @@
         <tbody>  
 @foreach($nationalitys as $nationality)
         <tr>
-<th> <a href="/nationality/info/{{$nationality->id}}">{{$nationality->nationality_ar}}</a></th>
-<th><a href="/nationality/info/{{$nationality->id}}"> {{$nationality->nationality_en}}</a></th>
+<th> <a href="#">{{$nationality->nationality_ar}}</a></th>
+<th><a href="# }}"> {{$nationality->nationality_en}}</a></th>
 <th>{{Carbon\Carbon::parse($nationality->created_at)->diffForHumans()}}</th>
 <th><a href="/nationality/edit/{{$nationality->id}}" class="btn btn-block btn-info btn-flat"> تعديل </a></th>
 <th><a href="/nationality/delete/{{$nationality->id}}" class="btn btn-block btn-danger btn-flat"> حذف </a></th>

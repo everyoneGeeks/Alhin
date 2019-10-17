@@ -41,10 +41,9 @@ class CVControllers extends Controller
         'total_experience' => 'required',
         'photo' => 'required',
         'job_title' => 'required',
-        'work_experience.*' => 'nullable',
-        'work_experience.*.job_title' => 'required',
-        'work_experience.*.company_name' => 'required',
-        'work_experience.*.experirnce_years' => 'required',
+        'work_experience_job_title' => 'required',
+        'work_experience_company_name' => 'required',
+        'work_experience_experirnce_years' => 'required',
 
     ];
 
@@ -77,9 +76,9 @@ class CVControllers extends Controller
             'total_experience.required' => $this->errorMessage[400]['en'],
             'job_title.required' =>  $this->errorMessage[400]['en'],
             'photo.required' =>  $this->errorMessage[400]['en'],
-            'work_experience.*.job_title.required' =>  $this->errorMessage[400]['en'],
-            'work_experience.*.company_name.required' =>  $this->errorMessage[400]['en'],
-            'work_experience.*.experirnce_years.required' =>  $this->errorMessage[400]['en'],
+            'work_experience_job_title.required' =>  $this->errorMessage[400]['en'],
+            'work_experience_company_name.required' =>  $this->errorMessage[400]['en'],
+            'work_experience_experirnce_years.required' =>  $this->errorMessage[400]['en'],
         ];
         try {
             $validator = \Validator::make($request->all(), $this->rules, $messages);
@@ -111,7 +110,9 @@ class CVControllers extends Controller
             $cv->job_title = $request->job_title;
             $this->SaveFile($cv, 'photo', 'photo', 'photo');
             $cv->nationality_id = $request->nationality_id;
-            $cv->work_experience = $request->work_experience;
+            $cv->work_experience_job_title =  $request->work_experience_job_title;
+            $cv->work_experience_company_name =  $request->work_experience_company_name;
+            $cv->work_experience_experirnce_years =  $request->work_experience_experirnce_years;
             $cv->created_at = \Carbon\Carbon::now();
             $cv->save();
 
@@ -150,9 +151,9 @@ class CVControllers extends Controller
             'total_experience.required' => $this->errorMessage[400]['en'],
             'job_title.required' =>  $this->errorMessage[400]['en'],
             'photo.required' =>  $this->errorMessage[400]['en'],
-            'work_experience.*.job_title.required' =>  $this->errorMessage[400]['en'],
-            'work_experience.*.company_name.required' =>  $this->errorMessage[400]['en'],
-            'work_experience.*.experirnce_years.required' =>  $this->errorMessage[400]['en'],
+            'work_experience_job_title.required' =>  $this->errorMessage[400]['en'],
+            'work_experience_company_name.required' =>  $this->errorMessage[400]['en'],
+            'work_experience_experirnce_years.required' =>  $this->errorMessage[400]['en'],
         ];
         #check employee
         $employee = Employee::where('apiToken', $request->apiToken)->first();
@@ -170,10 +171,9 @@ class CVControllers extends Controller
         $this->rules['total_experience'] = 'nullable';
         $this->rules['photo'] = 'nullable';
         $this->rules['job_title'] = 'nullable';
-        $this->rules['work_experience.*'] = 'nullable';
-        $this->rules['work_experience.*.job_title'] = 'nullable';
-        $this->rules['work_experience.*.company_name'] = 'nullable';
-        $this->rules['work_experience.*.experirnce_years'] = 'nullable';
+        $this->rules['work_experience_job_title'] = 'nullable';
+        $this->rules['work_experience_company_name'] = 'nullable';
+        $this->rules['work_experience_experirnce_years'] = 'nullable';
         try {
 
             $validator = \Validator::make($request->all(), $this->rules, $messages);
@@ -199,7 +199,9 @@ class CVControllers extends Controller
             $request->note == null ?: $cv->note = $request->note;
             $this->SaveFile($cv, 'photo', 'photo', 'photo');
             $request->nationality_id == null ?: $cv->nationality_id = $request->nationality_id;
-            $request->work_experience == null ?: $cv->work_experience = $request->work_experience;
+            $request->work_experience_job_title == null ?: $cv->work_experience_job_title =  $request->work_experience_job_title;
+            $request->work_experience_company_name == null ?: $cv->work_experience_company_name =  $request->work_experience_company_name;
+            $request->work_experience_experirnce_years == null ?: $cv->work_experience_experirnce_years =  $request->work_experience_experirnce_years;
             $cv->created_at = \Carbon\Carbon::now();
             $cv->save();
 
