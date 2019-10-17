@@ -8,7 +8,7 @@ return [
     | dashboard name that appper to all section in dashboard 
     |
     */
-    'nameApp'=>'قمر واحد',
+    'nameApp'=>' الحين ',
     /*
     |--------------------------------------------------------------------------
     | Dashboard name
@@ -16,7 +16,7 @@ return [
     | dashboard name that appper to all section in dashboard 
     |
     */    
-    "title"=>'لوحة تحكم تطبيق قمر واحد',
+    "title"=>'لوحة تحكم تطبيق   الحين',
 
     /*
     |--------------------------------------------------------------------------
@@ -25,5 +25,5 @@ return [
     | dashboard name that appper to all section in dashboard 
     |
     */    
-    "logo"=> 'dist/img/AdminLTELogo.png',
+    "logo"=> 'dist/img/logo.jpg',
 ];

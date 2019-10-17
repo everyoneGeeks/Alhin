@@ -12,4 +12,7 @@ class Employee extends Model
     {
         return $this->hasOne('App\CV');
     }
+
+
+
 }

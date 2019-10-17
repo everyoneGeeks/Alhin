@@ -21,6 +21,7 @@
             <th>الايميل</th>
             <th>الحاله</th>
             <th>تاريخ الانضمام</th>
+            <th>حذف  </th>
         </tr>
         </thead>
         <tbody>  
@@ -34,7 +35,7 @@
 <th><a  href="/company/status/{{$company->id}}" class="btn btn-block btn-danger btn-flat"> غير مفعل </a></th>
 @endif
 <th>{{Carbon\Carbon::parse($company->created_at)->diffForHumans()}}</th>
-
+<th><a  href="/company/delete/{{$company->id}}" class="btn btn-block btn-danger btn-flat">  حذف </a></th>
           
         </tr>
 
@@ -46,14 +47,15 @@
           <th>الايميل</th>
           <th>الحاله</th>
           <th>تاريخ الانضمام</th>
-
+          <th>حذف  </th>
         </tr>
         </tfoot>
         </table>
 
 @endif
 @endcomponent
- @endsection     
+ @endsection    
+  
 
  @section('javascript')
 <!-- DataTables -->

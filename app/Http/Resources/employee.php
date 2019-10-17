@@ -15,13 +15,13 @@ class employee extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
             'apiToken'=>$this->apiToken,
             'name'=>$this->name,
             'email'=>$this->email,
             'logo'=>isset($this->logo)== NULL ? NULL :$this->logo,
             'language'=>$this->language,
-            'jobs'=>Cv::collection($this->whenLoaded('cv'))
+            'cv'=>new CvInfo($this->cv),
+            'is_employee'=>1
         ];
     }
 }

@@ -11,7 +11,7 @@ class CV extends Model
     
     public function nationality()
     {
-        return $this->belongsTo('App\nationality','nationality_id');
+        return $this->belongsTo('App\nationality','nationality_id')->withTrashed();
     }
 
     public function employee ()
@@ -27,6 +27,13 @@ class CV extends Model
     public function religion ()
     {
         return $this->belongsTo('App\religion','religion_id');
+    }
+
+
+
+    public function rate ()
+    {
+        return $this->hasMany('App\cvRate','cv_id');
     }
     
 }

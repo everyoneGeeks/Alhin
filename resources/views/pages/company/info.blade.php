@@ -32,9 +32,9 @@
 
                 </ul>
                 @if($company->is_active == 1)
-<a  href="/employee/status/{{$company->id}}" class="btn btn-block btn-success btn-sm"> مفعل</a>
+<a  href="/company/status/{{$company->id}}" class="btn btn-block btn-success btn-sm"> مفعل</a>
 @else
-<a  href="/employee/status/{{$company->id}}" class="btn btn-block btn-danger btn-flat"> غير مفعل </a>
+<a  href="/company/status/{{$company->id}}" class="btn btn-block btn-danger btn-flat"> غير مفعل </a>
 @endif
               </div>
               <!-- /.card-body -->
@@ -58,24 +58,20 @@
       <table id="example2" class="table table-bordered table-hover">
               <thead>
               <tr>
-                  <th>  اسم الوظيفة بالعربي</th>
-                  <th>  اسم الوظيفة بالاجنبي</th>
+                  <th> الوظيفة </th>
                   <th> الهاتف</th>
                   <th> الايميل</th>
-                  <th> سنوات الخبرة </th>
-                  <th>  المدينة   </th>
+
               </tr>
               </thead>
               <tbody>  
       @foreach($company->job as $job)
               <tr>
-      <th> {{$job->job_title_ar}} </th>
-      <th> {{$job->job_title_en}} </th>
-  
+      <th><a href="/company/job/{{ $job->id }}"> {{$job->jobName->name_ar}} </th>
+
       <th> {{$job->phone}} </th>
       <th> {{$job->email}} </th>
-      <th> {{$job->total_exprience}} </th>
-      <th> {{$job->residence_country->country_ar}} </th>
+
 
               </tr>
       
@@ -83,27 +79,19 @@
               </tbody>
               <tfoot>
               <tr>
-                  <th>  اسم الوظيفة بالعربي</th>
-                  <th>  اسم الوظيفة بالاجنبي</th>
-                  <th> الهاتف</th>
-                  <th> الايميل</th>
-                  <th> سنوات الخبرة </th>
-                  <th>  المدينة   </th>
+                <th> الوظيفة </th>
+                <th> الهاتف</th>
+                <th> الايميل</th>
+
       
               </tr>
               </tfoot>
               </table>
-      
-
-      
 
       
 @endif  
-
 @endcomponent
-
  @endsection
-
  @section('javascript')
  <!-- DataTables -->
  <script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>
@@ -124,7 +112,7 @@
        "lengthChange": true,
        "searching": true,
        "ordering": true,
-       "autoWidth": false
+       "autoWidth": true
      });
    });
  </script>

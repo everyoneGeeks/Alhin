@@ -21,6 +21,7 @@
             <th>الايميل</th>
             <th>الحاله</th>
             <th>تاريخ الانضمام</th>
+            <th> حذف</th>
         </tr>
         </thead>
         <tbody>  
@@ -34,6 +35,7 @@
 <th><a  href="/employee/status/{{$Employee->id}}" class="btn btn-block btn-danger btn-flat"> غير مفعل </a></th>
 @endif
 <th>{{Carbon\Carbon::parse($Employee->created_at)->diffForHumans()}}</th>
+<th><a  href="/employee/delete/{{$Employee->id}}" class="btn btn-block btn-danger btn-flat"> حذف  </a></th>
 
           
         </tr>
@@ -46,6 +48,7 @@
           <th>الايميل</th>
           <th>الحاله</th>
           <th>تاريخ الانضمام</th>
+          <th> حذف</th>
 
         </tr>
         </tfoot>

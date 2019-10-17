@@ -14,6 +14,6 @@ class favCampany extends JsonResource
      */
     public function toArray($request)
     {
-        return new Jobs($this->job);
+        return new favObject($this->job);
     }
 }

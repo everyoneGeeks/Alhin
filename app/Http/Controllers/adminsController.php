@@ -38,66 +38,86 @@ public function list(){
     */
     public function info($id){
         $admin=User::where('id',$id)->first();
-        return view('pages.admin.info',compact('admin'));
-    }
-    /**  
-    * change status of category (active / deactive)
-    * @pararm int $id category id 
-    * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-    * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
-    */
-    public function status($id){
-        $category=category::where('id',$id)->first();
-    
-        if($category->is_active == 0){
-            $category->is_active = 1;
-            $category->save();
-            \Notify::success('تم تفعيل القسم بنجاح', 'تغير حالة القسم  ');
-        }else{
-            $category->is_active = 0;
-            $category->save();
-            \Notify::success('تم الغاء تفعيل القسم بنجاح', 'تغير حالة القسم ');
+        if($admin->is_super_admins == 0){
+            $permissions=json_decode($admin->permissions);
+
+            return view('pages.admin.info',compact('admin','permissions'));
         }
-    
-        return redirect()->back();
+
+        return view('pages.admin.info',compact('admin'));
     }
 
     /**  
-    * show  form edit  of  category By id 
-    * @pararm int $id category id 
+    *  edit  admin By id 
+    * @pararm int $id admin id 
     * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
     * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
     */
     public function formEdit($id){
-        $category=category::where('id',$id)->first();
-        return view('pages.categories.edit',compact('category'));
+        $admin=User::where('id',$id)->first();
+
+        if($admin->is_super_admins == 0){
+
+            $permissions=json_decode($admin->permissions);
+
+            return view('pages.admin.edit',compact('admin','permissions'));
+        }
+
+        return view('pages.admin.edit',compact('admin'));
     }    
 
     /**  
-    * save edit  of  category By id 
-    * @pararm int $id category id 
+    * edit  of  admin By id 
+    * @pararm int $id admin id 
     * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
     * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
     */
     public function submitEdit(Request $request,$id){
 
-        $rules=['name_ar'=>'required','name_en'=>'required'];
-        $message=['name_ar.required'=>'يجب ادخال اسم القسم ','name_en.required'=>'يجب ادخال اسم القسم'];
+        $rules=['name'=>'required','email'=>'required','password'=>'nullable|min:8'];
+        $message=['name.required'=>'يجب ادخال الاسم  ',
+        'email.required'=>'يجب ادخال الايميل ',
+        'password.min'=>'يجب ادخال ان يكون الرقم السري اكبر من 8'];
+
+
         $request->validate($rules,$message);
-
-        $category=category::where('id',$id)->first();
-        $category->name_ar=$request->name_ar;
-        $category->name_en=$request->name_en;
-        $category->is_active=$request->active ? $request->active : 0;
-        if($request->hasFile('logo')){
-            $this->SaveFile($category,'logo','logo','upload/category');
+    
+        if($request->admin == 1){
+            $admin=User::where('id',$id)->first();
+            $admin->name=$request->name;
+            $admin->email=$request->email;
+            $request->password == NULL ? :$admin->password=\Hash::make($request->password);
+            $admin->is_super_admins=1;
+            $admin->created_at=Carbon::now();
+            $admin->save();
+        
+        }else{
+            $permissions=[
+                'employee'=>['add'=>$request->addemployee,'edit'=>$request->editemployee,'delete'=>$request->deleteemployee],
+                'company'=>['add'=>$request->addcompany,'edit'=>$request->editcompany,'delete'=>$request->deletecompany],
+                'country'=>['add'=>$request->addcountry,'edit'=>$request->editcountry,'delete'=>$request->deletecountry],
+                'religion'=>['add'=>$request->addreligion,'edit'=>$request->editreligion,'delete'=>$request->deletereligion],
+                'ads'=>['add'=>$request->addads,'edit'=>$request->editads,'delete'=>$request->deleteads],
+                'app_setting'=>['add'=>$request->addapp_setting,'edit'=>$request->editapp_setting,'delete'=>$request->deleteapp_setting],
+                'contact'=>['add'=>$request->addcontact,'edit'=>$request->editcontact,'delete'=>$request->deletecontact],
+                'nationality'=>['add'=>$request->addnationality,'edit'=>$request->editnationality,'delete'=>$request->deletenationality],
+            ];
+            $admin=User::where('id',$id)->first();
+            $admin->name=$request->name;
+            $admin->email=$request->email;
+            $request->password == NULL ? : $admin->password=\Hash::make($request->password);
+            $admin->is_super_admins=0;
+            $admin->permissions=json_encode($permissions);
+            $admin->created_at=Carbon::now();
+            $admin->save();
         }
-
-        $category->created_at=Carbon::now();
-        $category->save();
-
-        \Notify::success('تم تعديل بيانات القسم بنجاح', ' تعديل بيانات القسم   ');
-        return redirect()->back();
+        
+        if($request->admin == 1){
+            \Notify::success('تم اضافة  ادمن جديد بنجاح', '  اضافة ادمن ');
+        }else{
+            \Notify::success('تم اضافة  مسئول جديد بنجاح', '  اضافة مسئول ');
+        }
+                return redirect()->back();
     }  
 
 
@@ -110,56 +130,69 @@ public function list(){
         return view('pages.admin.add');
     }    
 
-    /**  
+       /**  
     * save add  of  admin 
     * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
     * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
     */
     public function submitAdd(Request $request){
 
-    $rules=['name'=>'required','email'=>'required','password'=>'required|min:8'];
+        $rules=['name'=>'required','email'=>'required','password'=>'required|min:8'];
+    
+        $message=['name.required'=>'يجب ادخال الاسم  ',
+        'email.required'=>'يجب ادخال الايميل ','password.required'=>'يجب ادخال الرقم السري ',
+        'password.min'=>'يجب ادخال ان يكون الرقم السري اكبر من 8'];
+        $request->validate($rules,$message);
+    if($request->admin == 1){
+        $admin=new User;
+        $admin->name=$request->name;
+        $admin->email=$request->email;
+        $admin->password=\Hash::make($request->password);
+        $admin->is_super_admins=1;
+        $admin->created_at=Carbon::now();
+        $admin->save();
+    
+    }else{
+        $permissions=[
+        'employee'=>['add'=>$request->addemployee,'edit'=>$request->editemployee,'delete'=>$request->deleteemployee],
+        'company'=>['add'=>$request->addcompany,'edit'=>$request->editcompany,'delete'=>$request->deletecompany],
+        'country'=>['add'=>$request->addcountry,'edit'=>$request->editcountry,'delete'=>$request->deletecountry],
+        'religion'=>['add'=>$request->addreligion,'edit'=>$request->editreligion,'delete'=>$request->deletereligion],
+        'ads'=>['add'=>$request->addads,'edit'=>$request->editads,'delete'=>$request->deleteads],
+        'app_setting'=>['add'=>$request->addapp_setting,'edit'=>$request->editapp_setting,'delete'=>$request->deleteapp_setting],
+        'contact'=>['add'=>$request->addcontact,'edit'=>$request->editcontact,'delete'=>$request->deletecontact],
+        'nationality'=>['add'=>$request->addnationality,'edit'=>$request->editnationality,'delete'=>$request->deletenationality],
+    ];
+        $admin=new User;
+        $admin->name=$request->name;
+        $admin->email=$request->email;
+        $admin->password=\Hash::make($request->password);
+        $admin->is_super_admins=0;
+        $admin->permissions=json_encode($permissions);
+        $admin->created_at=Carbon::now();
+        $admin->save();
+    }
+    
+    if($request->admin == 1){
+        \Notify::success('تم اضافة  ادمن جديد بنجاح', '  اضافة ادمن ');
+    }else{
+        \Notify::success('تم اضافة  مسئول جديد بنجاح', '  اضافة مسئول ');
+    }
+            return redirect()->to('/admins');
+        } 
 
-    $message=['name.required'=>'يجب ادخال الاسم  ',
-    'email.required'=>'يجب ادخال الايميل ','password.required'=>'يجب ادخال الرقم السري ',
-    'password.min'=>'يجب ادخال ان يكون الرقم السري اكبر من 8'];
-    $request->validate($rules,$message);
-if($request->admin == 1){
-    $admin=new User;
-    $admin->name=$request->name;
-    $admin->email=$request->email;
-    $admin->password=\Hash::make($request->password);
-    $admin->is_super_admins=1;
-    $admin->created_at=Carbon::now();
-    $admin->save();
-
-}else{
-    $permissions=[
-    'employee'=>['add'=>$request->addemployee,'edit'=>$request->editemployee,'delete'=>$request->deleteemployee],
-    'company'=>['add'=>$request->addcompany,'edit'=>$request->editcompany,'delete'=>$request->deletecompany],
-    'country'=>['add'=>$request->addcountry,'edit'=>$request->editcountry,'delete'=>$request->deletecountry],
-    'religion'=>['add'=>$request->addreligion,'edit'=>$request->editreligion,'delete'=>$request->deletereligion],
-    'ads'=>['add'=>$request->addads,'edit'=>$request->editads,'delete'=>$request->deleteads],
-    'app_setting'=>['add'=>$request->addapp_setting,'edit'=>$request->editapp_setting,'delete'=>$request->deleteapp_setting],
-    'contact'=>['add'=>$request->addcontact,'edit'=>$request->editcontact,'delete'=>$request->deletecontact],
-    'nationality'=>['add'=>$request->addnationality,'edit'=>$request->editnationality,'delete'=>$request->deletenationality],
-];
-    $admin=new User;
-    $admin->name=$request->name;
-    $admin->email=$request->email;
-    $admin->password=\Hash::make($request->password);
-    $admin->is_super_admins=1;
-    $admin->permissions=json_encode($permissions);
-    $admin->created_at=Carbon::now();
-    $admin->save();
-}
-
-if($request->admin == 1){
-    \Notify::success('تم اضافة  ادمن جديد بنجاح', '  اضافة ادمن ');
-}else{
-    \Notify::success('تم اضافة  مسئول جديد بنجاح', '  اضافة مسئول ');
-}
-        return redirect()->back();
-    }  
 
     
+
+    /**  
+    * delete admin By id
+    * @pararm int $id admin id 
+    * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    * @author ಠ_ಠ Abdelrahman Mohamed <abdomohamed00001@gmail.com>
+    */
+    public function delete($id){
+        $admin=User::where('id',$id)->delete();
+        \Notify::success('تم حذف المستخدم بنجاح', '   تم حذف المستخدم ');
+        return redirect()->back();
+    }    
 }

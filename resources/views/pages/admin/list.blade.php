@@ -21,6 +21,7 @@
             <th>الايميل </th>
             <th>النوع</th>
             <th>الافعال</th>
+            <th>حذف</th>
         </tr>
         </thead>
         <tbody>  
@@ -34,6 +35,7 @@
 <th><span class="badge badge-warning">مسئول </span>  </a></th>
 @endif
 <th><a href="/admin/edit/{{$admin->id}}" class="btn btn-block btn-info btn-flat"> تعديل </a></th>
+<th><a href="/admin/delete/{{$admin->id}}" class="btn btn-block btn-danger btn-flat"> حذف </a></th>
         </tr>
 
         @endforeach  
@@ -44,6 +46,7 @@
             <th>الايميل </th>
             <th>النوع</th>
             <th>الافعال</th>
+            <th>حذف</th>
         </tr>
         </tfoot>
         </table>

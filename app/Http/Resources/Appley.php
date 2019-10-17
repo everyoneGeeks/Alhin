@@ -16,7 +16,7 @@ class Appley extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'job'=>new Job($this->job)
+            'job'=>new Jobs($this->job)
         ];
     }
 }
